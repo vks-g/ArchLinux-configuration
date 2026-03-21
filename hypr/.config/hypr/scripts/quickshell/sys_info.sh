@@ -66,7 +66,7 @@ toggle_wifi() {
 
 ## BLUETOOTH
 get_bt_status() {
-    if bluetoothctl show 2>/dev/null | grep -q "Powered: yes"; then
+    if timeout 2 bluetoothctl show 2>/dev/null | grep -q "Powered: yes"; then
         echo "on"
     else
         echo "off"
@@ -78,7 +78,7 @@ get_bt_icon() {
     
     if [ "$status" = "on" ]; then
         # Check if any device is connected
-        if bluetoothctl devices Connected 2>/dev/null | grep -q "Device"; then
+        if timeout 2 bluetoothctl devices Connected 2>/dev/null | grep -q "Device"; then
             echo "󰂱"  # Connected
         else
             echo "󰂯"  # On but not connected
@@ -91,7 +91,7 @@ get_bt_icon() {
 get_bt_connected_device() {
     if [ "$(get_bt_status)" = "on" ]; then
         # Get name, trim whitespace
-        local device=$(bluetoothctl devices Connected 2>/dev/null | head -n1 | cut -d' ' -f3-)
+        local device=$(timeout 2 bluetoothctl devices Connected 2>/dev/null | head -n1 | cut -d' ' -f3-)
         if [ -z "$device" ]; then
             echo "Disconnected"
         else
@@ -106,10 +106,10 @@ toggle_bt() {
     local status=$(get_bt_status)
     
     if [ "$status" = "on" ]; then
-        bluetoothctl power off 2>/dev/null
+        timeout 2 bluetoothctl power off 2>/dev/null
         notify-send -u low -i bluetooth-disabled "Bluetooth" "Disabled"
     else
-        bluetoothctl power on 2>/dev/null
+        timeout 2 bluetoothctl power on 2>/dev/null
         notify-send -u low -i bluetooth-active "Bluetooth" "Enabled"
     fi
 }

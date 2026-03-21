@@ -19,7 +19,7 @@ if [ -f "$BT_PID_FILE" ]; then
 fi
 
 # Ensure bluetooth scan is explicitly turned off
-bluetoothctl scan off > /dev/null 2>&1
+timeout 2 bluetoothctl scan off > /dev/null 2>&1 || true
 # ---------------------------------------------
 
 # Configuration: How many workspaces do you want to show?
@@ -32,7 +32,7 @@ print_workspaces() {
 
     # Generate the JSON
     # ADDED: --unbuffered so the file updates instantly for TopBar.qml
-    echo "$spaces" | jq --unbuffered --argjson a "$active" --arg end "$SEQ_END" -c '
+    echo "$spaces" | jq --argjson a "$active" --arg end "$SEQ_END" -c '
         # Create a map of workspace ID -> workspace data for easy lookup
         (map( { (.id|tostring): . } ) | add) as $s
         |
