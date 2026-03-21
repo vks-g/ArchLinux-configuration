@@ -1,0 +1,90 @@
+
+(defpoll WALLPAPERS :interval "1h" "bash ./get_wallpapers.sh")
+
+
+(defvar current_wall_path "")
+
+
+
+(defwidget wallpaper_selector []
+  ;; The Animated Gradient Border Container
+  (box :class "window-container" 
+       :orientation "v" 
+       :space-evenly false
+       :style "background-image: linear-gradient(135deg, #cba6f7, #89b4fa); padding: 3px;"
+
+    ;; The Actual Dark Background
+    (box :class "inner-box" 
+         :orientation "v" 
+         :space-evenly false
+
+        ;; --- HEADER SECTION ---
+        (box :class "header" 
+             :orientation "h" 
+             :space-evenly false 
+             :spacing 20
+             
+             (label :class "title" :text "Wallpaper Gallery" :hexpand true :halign "start")
+             
+             ;; Counter Badge
+             (label :class "count-badge" :text "${arraylength(WALLPAPERS)} Found")
+             
+             ;; Close Button
+             (button :class "close-btn" 
+                     :onclick "eww -c . close selector" 
+                     "󰅖")
+        )
+
+        ;; --- THE CAROUSEL (Horizontal Scroll) ---
+        (scroll :hscroll true 
+                :vscroll false 
+                :class "scroll-area"
+                :vexpand true
+
+            (box :orientation "h" 
+                 :spacing 25
+                 :space-evenly false
+                 :style "padding: 10px 5px;"
+
+                (for wall in WALLPAPERS
+                    (button :class "wall-card ${current_wall_path == wall.path ? 'active' : ''}"
+                            
+                            :onclick "swww img '${wall.path}' --transition-type grow --transition-pos 0.5,0.5 --transition-step 90 --transition-fps 60 & eww -c . update current_wall_path='${wall.path}'"
+                            :tooltip "${wall.name}"
+                        
+                        (box :orientation "v" :space-evenly false :spacing 12
+                             ;; Image Preview
+                             (box :class "wall-preview" 
+                                  :style "background-image: url('${wall.thumb}');"
+                                  :width 280 
+                                  :height 158)
+                             
+                             ;; Footer (Name + Icon)
+                             (box :orientation "h" :space-evenly false :spacing 8 :halign "center"
+                                (label :class "wall-icon" :text "")
+                                (label :class "wall-name" 
+                                       :text "${wall.name}" 
+                                       :limit-width 22)
+                             )
+                        )
+                    )
+                )
+            )
+        )
+    )
+  )
+)
+
+
+
+(defwindow wallpaper_selector
+    :monitor 0
+    :geometry (geometry :x "0%"
+                        :y "0%"
+                        :width "1200px" 
+                        :height "360px"
+                        :anchor "center center")
+    :stacking "fg"
+    :exclusive false
+    :namespace "wallpaper_selector"
+    (wallpaper_selector))

@@ -1,0 +1,1458 @@
+/* --- COLORS (Catppuccin Mocha) --- */
+$rosewater: #f5e0dc;
+$flamingo: #f2cdcd;
+$pink: #f5c2e7;
+$mauve: #cba6f7;
+$red: #f38ba8;
+$maroon: #eba0ac;
+$peach: #fab387;
+$yellow: #f9e2af;
+$green: #a6e3a1;
+$teal: #94e2d5;
+$sky: #89dceb;
+$sapphire: #74c7ec;
+$blue: #89b4fa;
+$lavender: #b4befe;
+$text: #cdd6f4;
+$subtext1: #bac2de;
+$subtext0: #a6adc8;
+$overlay2: #9399b2;
+$overlay1: #7f849c;
+$overlay0: #6c7086;
+$surface2: #585b70;
+$surface1: #45475a;
+$surface0: #313244;
+$base: #1e1e2e;
+$mantle: #181825;
+$crust: #11111b;
+
+/* --- GLOBAL DEFAULTS --- */
+* {
+  all: unset;
+  font-family: "JetBrains Mono", "Iosevka Nerd Font", monospace;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes pulse-btn {
+    0% { box-shadow: 0 0 0 0 rgba(137, 180, 250, 0.7); }
+    70% { box-shadow: 0 0 0 6px rgba(137, 180, 250, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(137, 180, 250, 0); }
+}
+
+@keyframes gradient-move {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes vinyl_energy {
+    0%   { box-shadow: 0 0 0 0 rgba(203, 166, 247, 0); }
+    15%  { box-shadow: 0 0 20px 5px rgba(203, 166, 247, 0.4); } 
+    30%  { box-shadow: 0 0 10px 5px rgba(180, 190, 254, 0.2); }  
+    45%  { box-shadow: 0 0 20px 10px rgba(137, 180, 250, 0.5); } 
+    100% { box-shadow: 0 0 0 0 rgba(180, 190, 254, 0); }
+}
+
+@keyframes liquid_energy {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+@keyframes complex_heartbeat {
+    0%   { box-shadow: 0px 0px 0px 0px rgba(180, 190, 254, 0); }
+    15%  { box-shadow: 0px 0px 8px 2px rgba(203, 166, 247, 0.6); } 
+    30%  { box-shadow: 0px 0px 4px 1px rgba(180, 190, 254, 0.4); } 
+    45%  { box-shadow: 0px 0px 12px 4px rgba(203, 166, 247, 0.8); } 
+    100% { box-shadow: 0px 0px 0px 0px rgba(180, 190, 254, 0); }
+}
+
+@keyframes breathe {
+    0% { color: $mauve; text-shadow: 0 0 0 rgba(0,0,0,0); }
+    50% { color: $pink; text-shadow: 0 0 5px rgba(203, 166, 247, 0.4); }
+    100% { color: $mauve; text-shadow: 0 0 0 rgba(0,0,0,0); }
+}
+
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(243, 139, 168, 0.4); }
+    70% { box-shadow: 0 0 0 6px rgba(243, 139, 168, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(243, 139, 168, 0); }
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* --- BAR WIDGETS --- */
+.bar_class {
+  background-color: transparent;
+}
+
+
+.dockbox {
+  background-color: rgba(30, 30, 46, 0.85); 
+  border: 1px solid rgba(255, 255, 255, 0.05); 
+  border-radius: 12px; 
+  padding: 4px 10px; 
+  margin: 2px 2px;
+  color: $text;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.dockbox:hover {
+    background-color: $surface0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-color: $overlay0;
+}
+
+.genicon {
+  background-repeat: no-repeat;
+  background-size: 18px;
+  background-position: center;
+  min-height: 24px;
+  min-width: 24px;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+.genicon:hover {
+    background-color: $surface1;
+    box-shadow: 0 0 5px rgba(205, 214, 244, 0.2); 
+}
+
+/* Workspace */
+.workspace-btn {
+    font-family: "JetBrains Mono ExtraBold";
+    font-size: 14px;
+    min-width: 24px;
+    min-height: 24px;
+    padding: 2px 4px;
+    margin: 0px 3px;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+    border: none;
+    box-shadow: none;
+}
+
+.workspace-btn.empty {
+    color: $surface2; 
+    background-color: transparent;
+}
+
+.workspace-btn.empty:hover {
+    color: $overlay1;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.workspace-btn.occupied {
+    color: $blue;
+    background-color: $surface1; 
+}
+
+.workspace-btn.occupied:hover {
+    background-color: $surface2;
+    color: $sapphire;
+}
+
+.workspace-btn.active {
+    color: $base;
+    background-color: $mauve;
+    font-weight: 900;
+}
+
+.workspace-btn.active:hover {
+    background-color: $pink;
+}
+
+/* Time & Weather */
+/* --- SCHEDULE SIDE (Left) --- */
+
+.schedule-horiz-container {
+    background-color: $base; 
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 15px 20px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.schedule-scroll-horiz {
+    /* Cleaner scrollbar for horizontal flow */
+}
+.schedule-scroll-horiz trough { min-height: 4px; }
+.schedule-scroll-horiz slider { min-height: 4px; min-width: 40px; }
+
+.horiz-card {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 10px 12px;
+    border-left: 3px solid $blue; 
+    transition: all 0.2s;
+    min-height: 80px; /* Ensure cards have uniform height */
+}
+
+
+/* --- NAV BUTTONS --- */
+.schedule-controls {
+    margin-bottom: 5px;
+}
+
+.sch-nav-btn {
+    font-family: "Iosevka Nerd Font";
+    background-color: rgba(255,255,255,0.05);
+    color: $overlay2;
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.sch-nav-btn:hover {
+    background-color: $surface2;
+    color: $text;
+}
+
+.sch-nav-btn.link {
+    color: $blue;
+}
+.sch-nav-btn.link:hover {
+    background-color: $blue;
+    color: $base;
+}
+
+
+.schedule-loading-spinner {
+    font-family: "Iosevka Nerd Font";
+    color: $yellow;
+    margin-left: 10px;
+}
+
+.horiz-card.active {
+    border-color: $mauve;       /* Highlight border */
+    box-shadow: 0 0 15px rgba(203, 166, 247, 0.15); /* Soft glow */
+}
+
+/* Ensure the text stays readable on the highlight */
+.horiz-card.active .sch-subject {
+    color: $mauve;
+    text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+.horiz-card:hover {
+    background-color: $surface1;
+    border-left-color: $mauve;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.sch-teacher-box {
+    margin-top: 4px; /* Space between time and teacher */
+    margin-bottom: 2px;
+}
+
+/* Teacher Icon */
+.sch-teacher-icon {
+    font-family: "Iosevka Nerd Font";
+    font-size: 12px;
+    color: $teal; /* Different accent color */
+}
+
+/* Teacher Text */
+.sch-teacher-text {
+    font-family: "JetBrains Mono";
+    font-size: 11px;
+    font-weight: 700;
+    color: $subtext1; /* Muted text so it doesn't fight with the Subject title */
+}
+
+/* Reusing your existing text styles */
+.sch-time {
+    font-size: 11px;
+    font-weight: 800;
+    color: $overlay2;
+}
+
+.schedule-gap {
+    background-color: transparent;
+    /* Optional: A subtle dashed line at the bottom to indicate "Time passing" */
+    border-bottom: 2px dashed rgba(255, 255, 255, 0.05);
+    margin-top: 45px; /* Push the dashed line to the middle/bottom */
+    min-height: 2px;
+}
+
+.sch-room {
+    font-size: 10px;
+    font-weight: bold;
+    color: $peach;
+    background-color: rgba(250, 179, 135, 0.1);
+    padding: 1px 6px;
+    border-radius: 6px;
+    margin-left: 5px;
+}
+
+.sch-subject {
+    font-family: "JetBrains Mono";
+    font-size: 13px;
+    font-weight: 700;
+    color: $text;
+    margin-top: 8px; /* More spacing for horizontal layout */
+}
+
+.sch-empty {
+    color: $overlay1;
+    font-style: italic;
+    margin-top: 10px;
+}
+
+
+.clockbox { margin-right: 15px; }
+.time { 
+    font-size: 15px; 
+    font-weight: 900; 
+    color: $blue;
+    text-shadow: 0 0 2px rgba(137, 180, 250, 0.3); 
+    transition: color 0.3s;
+}
+.clockbox:hover .time { color: $sky; }
+
+.date { font-size: 11px; font-weight: bold; color: $subtext0; }
+
+.weatherbox { margin-left: 0px; }
+.weathericon { 
+    font-family: "Iosevka Nerd Font"; 
+    font-size: 24px; 
+    color: $yellow; 
+    margin-right: 8px;
+    transition: color 0.3s;
+}
+.weatherbox:hover .weathericon {
+    color: $peach;
+}
+.weathertemp { font-size: 16px; font-weight: 800; color: $peach; }
+
+/* Bar Media Widget */
+.album_art {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 32px;
+  min-width: 32px;
+  border-radius: 8px;
+  background-color: $surface1;
+  border: 1px solid $surface1;
+  transition: all 0.3s;
+}
+
+.bar-media-playing .album_art {
+      animation: vinyl_energy 5s ease-in-out infinite;
+      border-color: $mauve;
+}
+
+.song_title { font-weight: 800; font-size: 13px; color: $sapphire; }
+.song_time_bar { font-family: "JetBrains Mono"; font-weight: 800; font-size: 11px; color: $overlay1; }
+
+.media_btn, .media_btn_play {
+  font-family: "Iosevka Nerd Font";
+  font-size: 20px;
+  color: $overlay2;
+  padding: 0px 4px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.media_btn:hover { color: $lavender; background-color: $surface1; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.media_btn_play { color: $text; font-size: 24px; }
+.media_btn_play:hover { color: $green; text-shadow: 0 0 5px rgba(166, 227, 161, 0.5); }
+
+/* --- SYSTEM WIDGET (Glass & Smooth Animation) --- */
+.system-widget {
+  background-image: linear-gradient(to bottom right, rgba(30, 30, 46, 0.95), rgba(24, 24, 37, 0.85));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 6px 8px;
+  margin: 0px 4px;
+  color: $text;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.sys-pill {
+  background-color: rgba(255, 255, 255, 0.04);
+  padding: 6px 14px;
+  border-radius: 18px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 24px;
+  border: 1px solid transparent;
+}
+
+.sys-pill:hover {
+  background-color: $surface1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.sys-text {
+  font-family: "JetBrains Mono";
+  font-weight: 800;
+  font-size: 13px;
+  margin-top: 1px;
+}
+
+.sys-icon-kb, .sys-icon-wifi, .sys-icon-bt, .sys-icon-vol, .sys-icon-bat {
+  font-family: "Iosevka Nerd Font";
+  font-size: 18px;
+}
+
+/* 1. Keyboard */
+.sys-kb { color: $overlay2; }
+.sys-kb:hover { color: $text; }
+
+/* 2. WiFi */
+.sys-wifi {
+    color: $subtext0;
+    min-width: 80px; 
+}
+.sys-wifi.active {
+    background-image: linear-gradient(135deg, $blue, $sapphire);
+    color: $crust;
+    box-shadow: 0 0 15px rgba(137, 180, 250, 0.3);
+    border: none;
+}
+.sys-wifi.active:hover {
+    box-shadow: 0 0 20px rgba(137, 180, 250, 0.5);
+}
+.sys-wifi.active .sys-icon-wifi { color: $crust; }
+
+/* 3. Bluetooth */
+.sys-bt {
+    /* DEFAULT STATE (Disconnected): Small, Round, Inactive Color */
+    color: $subtext0;
+    background-color: rgba(255, 255, 255, 0.04);
+    
+    /* Make it a circle/pill by restricting padding */
+    padding: 6px 14px; 
+    min-width: 0px; /* Allow it to shrink */
+    border-radius: 20px;
+    
+    /* Smooth Transition for the "Light Up" effect */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sys-bt:hover {
+    color: $text;
+    background-color: $surface1;
+}
+
+/* ACTIVE STATE (Connected): Gradient, "Lit Up" */
+.sys-bt.active {
+    background-image: linear-gradient(135deg, $mauve, $pink);
+    color: $crust;
+    box-shadow: 0 0 15px rgba(203, 166, 247, 0.3);
+    
+    /* Slightly more padding when active to let content breathe */
+    padding: 6px 14px;
+}
+
+.sys-bt.active:hover {
+    box-shadow: 0 0 20px rgba(203, 166, 247, 0.5);
+}
+
+.sys-bt.active .sys-icon-bt {
+    color: $crust;
+}
+
+/* Fix Icon alignment */
+.sys-bt-icon-box {
+    margin-top: -1px; /* Optical adjustment */
+}
+
+/* --- Bluetooth Disconnect Button --- */
+/* --- Bluetooth Disconnect Button --- */
+.sys-bt-disconnect {
+    font-family: "Iosevka Nerd Font";
+    font-size: 14px;
+    font-weight: 900;
+    
+    /* Text color: Subtle by default */
+    color: rgba(30, 30, 46, 0.6); 
+    
+    /* Positioning & Shape */
+    margin-left: 8px;
+    padding: 0px; 
+    min-width: 22px; 
+    min-height: 22px;
+    border-radius: 50%; /* Perfect Circle */
+    
+    /* Transparent background by default */
+    background-color: transparent;
+    transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.sys-bt-disconnect:hover {
+    /* On Hover: Red background, white text, slightly larger */
+    background-color: $red;
+    color: $base;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.sys-bt-disconnect:active {
+    /* Click effect */
+    background-color: $maroon;
+}
+
+/* 4. Volume */
+.sys-vol { color: $peach; }
+.sys-vol:hover { color: $rosewater; }
+.sys-vol.muted {
+    color: $overlay0;
+    background-color: rgba(0,0,0,0.2);
+    text-decoration: line-through;
+}
+
+/* 5. Battery */
+.sys-bat { color: $green; }
+.sys-icon-bat.low {
+    color: $red;
+    animation: blink 2s infinite;
+}
+
+/* --- MUSIC POPUP --- */
+.music-window-box {
+    background-color: $base;
+    border-radius: 12px;
+    transition: border-color 0.5s ease;
+}
+
+.animated-gradient-border {
+    background-size: 300% 300%;
+    animation: gradient-move 5s ease infinite;
+    border-radius: 14px;
+}
+
+.music-bg-blur {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-width: 700px;
+    min-height: 620px;
+    opacity: 0.6; 
+    border-radius: 10px; 
+}
+
+.music-content {
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.music-cover-art {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 50%;
+    border: 4px solid $surface1;
+    box-shadow: inset 0 0 0 20px rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
+}
+
+.music-cover-art.playing {
+    border-color: $mauve;
+    animation: vinyl_energy 4s ease-in-out infinite;
+}
+
+.music-cover-art.paused {
+    border-color: $overlay0;
+    opacity: 0.7;
+    animation: none;
+}
+
+.music-title { font-weight: 900; font-size: 20px; color: $lavender; }
+.music-artist { font-weight: 700; font-size: 14px; color: $pink; }
+
+.meta-pill {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 4px 10px;
+}
+.meta-icon { font-family: "Iosevka Nerd Font"; color: $mauve; font-size: 14px; }
+.meta-text { font-family: "JetBrains Mono"; font-weight: 800; font-size: 12px; color: $overlay2; }
+.music-source { font-size: 12px; color: $yellow; font-weight: bold; font-style: italic; margin-top: 2px; }
+
+.music-progress-area { margin-top: 10px; margin-bottom: 5px; }
+.music-time { font-size: 13px; font-weight: bold; color: $overlay2; margin-top: 5px; }
+
+scale trough {
+    background-color: $surface0;
+    border-radius: 10px;
+    min-height: 8px;
+}
+scale highlight {
+    background-color: $blue;
+    border-radius: 10px;
+}
+
+.music-progress-bar trough {
+    all: unset;
+    background-color: rgba(17, 17, 27, 0.6); 
+    border-radius: 99px; 
+    min-height: 8px;      
+    min-width: 100px;
+    margin-bottom: 5px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.music-progress-bar highlight {
+    all: unset;
+    background-image: linear-gradient(90deg, $blue, $mauve, $text, $sapphire, $blue);
+    background-size: 300% 100%;
+    animation: liquid_energy 3s linear infinite;
+    border-radius: 99px;
+    min-height: 8px; 
+    transition: all 0.5s ease;
+}
+
+.music-progress-bar:hover highlight { animation-duration: 1.5s; opacity: 0.8; }
+
+.music-progress-bar slider {
+    all: unset;
+    background-color: $text; 
+    min-height: 14px;
+    min-width: 14px;
+    border-radius: 50%;
+    margin-left: -7px;
+    transition: box-shadow 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    box-shadow: none;
+}
+
+.music-progress-bar.playing slider { animation: complex_heartbeat 4s ease-in-out infinite; }
+.music-progress-bar slider:hover { animation: none; box-shadow: 0px 0px 0px 3px $text, 0px 0px 15px 5px $lavender; }
+.music-progress-bar slider:active { animation: none; box-shadow: 0px 0px 0px 5px $text, 0px 0px 25px 8px $blue; }
+
+.music-progress-bar highlight { animation-play-state: paused; }
+.music-progress-bar.playing highlight { animation-play-state: running; }
+
+.ctrl-btn { font-family: "Iosevka Nerd Font"; font-size: 24px; color: $overlay2; }
+.ctrl-btn:hover { color: $text; }
+.play-btn-big { font-family: "Iosevka Nerd Font"; font-size: 42px; color: $mauve; }
+.play-btn-big:hover { color: $pink; }
+
+.music-sep-h {
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: 20px 10px; 
+    min-height: 2px;
+    border-radius: 99px;
+}
+
+/* --- EQUALIZER --- */
+.eq-container { padding: 0px 10px; }
+.eq-header { font-weight: 900; font-size: 16px; color: $mauve; }
+.eq-preset-name { font-weight: bold; font-size: 14px; color: $subtext0; }
+
+.eq-scale trough {
+    background-color: rgba(17, 17, 27, 0.6);
+    border-radius: 99px;
+    min-width: 6px; 
+    min-height: 150px;
+    margin-bottom: 5px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.eq-scale highlight {
+    background-color: $blue; 
+    border-radius: 99px;
+    min-width: 6px;
+    transition: all 0.1s ease;
+}
+
+.eq-scale slider {
+    background-color: $text;
+    min-height: 14px;
+    min-width: 14px;
+    border-radius: 50%;
+    margin-left: 0px; 
+    margin-bottom: -4px;
+    box-shadow: 0 0 3px rgba(0,0,0,0.5); 
+}
+
+.eq-band-label { font-size: 10px; font-weight: bold; color: $overlay1; }
+
+.eq-preset-btn {
+    background-color: rgba(30, 30, 46, 0.75);
+    color: $subtext0;
+    padding: 8px 0px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    border: 1px solid transparent; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.eq-preset-btn:hover {
+    background-color: $surface1;
+    color: $text;
+    border-color: $overlay0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
+}
+
+.eq-preset-btn.active {
+    background-color: $mauve;
+    color: $base;
+    border-color: $mauve;
+    box-shadow: 0 0 15px rgba(203, 166, 247, 0.5); 
+}
+
+.eq-preset-btn.active:hover { box-shadow: 0 0 20px rgba(203, 166, 247, 0.7); }
+
+.eq-apply-btn {
+    background-color: transparent;
+    color: $overlay1;
+    font-weight: bold;
+    font-size: 11px;
+    border-radius: 6px;
+    padding: 2px 10px;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+}
+
+.eq-apply-btn.highlight {
+    background-color: rgba(243, 139, 168, 0.1); 
+    color: $red;
+    border: 1px solid $red;
+    box-shadow: 0 0 8px rgba(243, 139, 168, 0.2);
+    animation: pulse-red 2s infinite;
+}
+
+.eq-apply-btn:hover { color: $text; background-color: $surface0; }
+.eq-apply-btn.highlight:hover { background-color: $red; color: $base; }
+.eq-apply-btn:active { background-color: $surface1; }
+
+
+/* --- DASHBOARD NETWORK WIDGET (Redesigned) --- */
+
+.net-window-container {
+    background-color: $base;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.net-card {
+    background-color: $surface0;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* --- HERO SIDE (Left) --- */
+.net-hero-side {
+    padding: 20px;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+}
+
+/* Gradients */
+.wifi-gradient {
+    background-image: linear-gradient(135deg, $sapphire, $blue);
+    box-shadow: inset -5px 0 15px rgba(0,0,0,0.1);
+}
+
+.bt-gradient {
+    background-image: linear-gradient(135deg, $mauve, $pink);
+    box-shadow: inset -5px 0 15px rgba(0,0,0,0.1);
+}
+
+/* Hero Typography (Dark Text for contrast on gradient) */
+.dark-text {
+    color: $crust; 
+}
+
+.net-card-header {
+    margin-bottom: 15px;
+}
+
+.net-card-title {
+    font-family: "JetBrains Mono";
+    font-weight: 900;
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+.net-card-toggle {
+    background: transparent;
+    font-family: "Iosevka Nerd Font";
+    font-size: 28px;
+    color: rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
+    border: none;
+}
+.net-card-toggle.active {
+    color: $crust;
+    text-shadow: 0 0 10px rgba(255,255,255,0.4);
+}
+.net-card-toggle:hover {
+    color: $base;
+}
+
+/* Main Status Info */
+.net-hero-icon {
+    font-family: "Iosevka Nerd Font";
+    font-size: 72px;
+    margin-bottom: 5px;
+    opacity: 0.9;
+}
+
+.net-hero-ssid {
+    font-family: "JetBrains Mono";
+    font-weight: 900;
+    font-size: 16px;
+    margin-bottom: 2px;
+}
+
+.net-hero-sub {
+    font-size: 11px;
+    font-weight: bold;
+    opacity: 0.7;
+    margin-bottom: 10px;
+}
+
+.net-hero-link {
+    font-size: 11px;
+    font-weight: 800;
+    opacity: 0.6;
+    background: transparent;
+    transition: opacity 0.2s;
+}
+.net-hero-link:hover {
+    opacity: 1;
+}
+
+/* Disconnect Button */
+.dark-btn {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: $crust;
+    font-weight: 800;
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    margin-top: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.2s;
+}
+.dark-btn:hover {
+    background-color: $crust;
+    color: $text;
+}
+
+/* --- LIST SIDE (Right) --- */
+.net-list-side {
+    padding: 15px;
+    background-color: rgba(20, 20, 30, 0.4);
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+
+.net-list-header {
+    font-weight: 800;
+    font-size: 12px;
+    color: $overlay2;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+
+.net-item {
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-bottom: 2px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.net-item:hover {
+    background-color: $surface1;
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.net-item-icon {
+    font-family: "Iosevka Nerd Font";
+    font-size: 24px;
+    margin-right: 12px;
+}
+
+.wifi-color { color: $sapphire; }
+.bt-color { color: $mauve; }
+
+.net-item-ssid {
+    font-weight: 700;
+    font-size: 13px;
+    color: $text;
+}
+
+.net-item-sec {
+    font-size: 10px;
+    color: $overlay0;
+    font-weight: 600;
+}
+
+.net-item-btn {
+    font-weight: 800;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background-color: $surface2;
+    color: $text;
+    transition: all 0.2s;
+}
+
+.net-item-btn:hover {
+    background-color: $blue;
+    color: $base;
+}
+
+.net-item-btn.pulsing {
+    background-color: $sapphire;
+    color: $base;
+    animation: pulse-btn 1.5s infinite;
+}
+
+.net-empty {
+    font-style: italic;
+    color: $overlay1;
+    margin-top: 20px;
+}
+
+/* Nicer Scrollbar */
+.net-scroll-area trough {
+    background-color: transparent;
+    min-height: 10px;
+}
+.net-scroll-area slider {
+    background-color: $surface2;
+    min-height: 30px;
+    min-width: 4px;
+    border-radius: 10px;
+}
+.net-scroll-area slider:hover {
+    background-color: $overlay1;
+}
+
+
+/* --- CALENDAR & WEATHER (Redesigned) --- */
+
+.cal-window-container {
+    background-color: $base;
+    border-radius: 12px;
+}
+
+/* --- LEFT SIDE: Calendar --- */
+.cal-left-side {
+    background-color: $base;
+    padding: 20px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+.cal-hero-box {
+    margin-bottom: 25px;
+}
+
+.cal-hero-time {
+    font-family: "JetBrains Mono";
+    font-weight: 900;
+    font-size: 56px;
+    color: $mauve;
+    letter-spacing: -2px;
+    text-shadow: 0 0 20px rgba(203, 166, 247, 0.4);
+}
+
+.cal-hero-date {
+    font-family: "JetBrains Mono";
+    font-weight: 700;
+    font-size: 14px;
+    color: $subtext0;
+    margin-top: -5px;
+}
+
+/* Calendar Widget Styling */
+.cal-widget-container {
+    background-color: $base;
+    padding: 10px;
+    border-radius: 16px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+}
+
+.cal-widget {
+    font-family: "JetBrains Mono";
+    color: $text;
+    padding: 5px;
+}
+.cal-widget .header {
+    font-weight: 800;
+    color: $blue;
+    font-size: 14px;
+}
+.cal-widget .button {
+    color: $overlay2; 
+    font-weight: bold;
+}
+.cal-widget :selected {
+    background-color: $mauve;
+    color: $base;
+    font-weight: 900;
+    border-radius: 8px;
+}
+.cal-widget :indeterminate {
+    color: $overlay0;
+}
+
+/* --- RIGHT SIDE: Weather --- */
+.cal-right-side {
+    padding: 20px 25px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+/* Header & Nav */
+.weather-header { margin-bottom: 20px; }
+.weather-day-big {
+    font-family: "JetBrains Mono";
+    font-weight: 900;
+    font-size: 24px;
+    color: $text;
+}
+.weather-nav-btn {
+    font-family: "Iosevka Nerd Font";
+    background-color: rgba(255,255,255,0.05);
+    color: $overlay2;
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+.weather-nav-btn:hover {
+    background-color: $surface2;
+    color: $text;
+}
+
+/* Main Info */
+.weather-icon-huge {
+    font-family: "Iosevka Nerd Font";
+    font-size: 80px;
+    text-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.weather-temp-huge {
+    font-family: "JetBrains Mono";
+    font-weight: 900;
+    font-size: 42px;
+    color: $text;
+    margin-right: -4px; /* Slight adjustment for font alignment */
+}
+
+.weather-desc {
+    font-weight: 800;
+    font-size: 14px;
+    color: $subtext1;
+}
+
+.weather-feels {
+    font-size: 11px;
+    font-style: italic;
+    color: $overlay1;
+    margin-top: 4px;
+}
+
+/* Stats Pills */
+.weather-stats-grid {
+    margin-bottom: 25px;
+}
+.weather-pill {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.02);
+}
+.wp-icon {
+    font-family: "Iosevka Nerd Font";
+    font-size: 18px;
+    color: $blue;
+    margin-bottom: 2px;
+}
+.wp-val {
+    font-weight: 800;
+    font-size: 13px;
+    color: $text;
+}
+.wp-lbl {
+    font-size: 10px;
+    font-weight: bold;
+    color: $overlay1;
+}
+/* Hourly - No Scroll */
+.weather-hourly-box {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 12px;
+    padding: 12px 15px;
+}
+.hourly-title {
+    font-size: 10px;
+    font-weight: 800;
+    color: $overlay0;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+.hourly-item {
+    background-color: transparent;
+    padding: 5px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+.hourly-item:hover {
+    background-color: rgba(255,255,255,0.05);
+}
+.h-time {
+    font-size: 10px;
+    font-weight: bold;
+    color: $overlay1;
+}
+.h-icon {
+    font-family: "Iosevka Nerd Font";
+    font-size: 18px;
+    margin: 4px 0;
+}
+.h-temp {
+    font-family: "JetBrains Mono";
+    font-weight: 800;
+    font-size: 12px;
+    color: $text;
+}
+
+/* --- BATTERY POPUP (Enhanced, GTK Safe) --- */
+.bat-window-container {
+  background-color: $base;
+  border-radius: 12px; /* Inner radius */
+  padding: 0px;
+  /* Shadow is now handled by the .animated-gradient-border logic */
+}
+
+/* --- LEFT PANEL (Visual Gauge) --- */
+.bat-left-panel {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  padding: 30px 25px;
+  box-shadow: inset -3px 0 20px rgba(0,0,0,0.15);
+  transition: all 0.5s ease;
+  min-height: 330px;
+}
+
+/* Dynamic Gradients for Different States */
+.bat-left-panel.normal {
+  background-image: linear-gradient(135deg, $sapphire, $blue);
+}
+
+.bat-left-panel.charging {
+  background-image: linear-gradient(135deg, $green, $teal);
+}
+
+.bat-left-panel.critical {
+  background-image: linear-gradient(135deg, $red, $maroon);
+  animation: pulse-red 2s infinite;
+}
+
+/* Circular Progress Styling */
+.bat-circle {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: $crust;
+  transition: all 0.3s ease;
+}
+
+.bat-left-panel.normal .bat-circle { 
+  color: rgba(17, 17, 27, 0.3);
+}
+
+.bat-left-panel.charging .bat-circle { 
+  color: rgba(17, 17, 27, 0.3);
+}
+
+.bat-left-panel.critical .bat-circle { 
+  color: rgba(17, 17, 27, 0.3);
+}
+
+/* Icon & Text inside Circle */
+.bat-left-icon {
+  font-family: "Iosevka Nerd Font";
+  font-size: 56px;
+  color: $crust;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  margin-bottom: 8px;
+}
+
+.bat-left-text {
+  font-family: "JetBrains Mono";
+  font-weight: 900;
+  font-size: 32px;
+  color: $crust;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Charging Animation (Color & Shadow only) */
+@keyframes charge-pulse {
+  0% { 
+    color: $crust; 
+    text-shadow: 0 0 0 rgba(249, 226, 175, 0);
+  }
+  50% { 
+    color: $yellow; 
+    text-shadow: 0 0 20px rgba(249, 226, 175, 0.9);
+  }
+  100% { 
+    color: $crust; 
+    text-shadow: 0 0 0 rgba(249, 226, 175, 0);
+  }
+}
+
+.anim-charging {
+  animation: charge-pulse 2s ease-in-out infinite;
+}
+
+/* --- RIGHT PANEL (Info & Controls) --- */
+.bat-right-panel {
+  padding: 25px 30px;
+  background-color: rgba(255, 255, 255, 0.02);
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+/* Status Header */
+.bat-info-header {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.bat-info-title {
+  font-family: "JetBrains Mono";
+  font-weight: 900;
+  font-size: 20px;
+  color: $mauve;
+  margin-bottom: 6px;
+  text-shadow: 0 0 15px rgba(203, 166, 247, 0.3);
+}
+
+.bat-info-sub {
+  font-family: "JetBrains Mono";
+  font-weight: 700;
+  font-size: 12px;
+  color: $overlay1;
+}
+
+/* Section Titles */
+.bat-pow-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: $overlay0;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+/* Power Profile Switcher */
+.bat-profile-switcher {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.profile-btn {
+  font-family: "Iosevka Nerd Font";
+  font-size: 28px;
+  padding: 12px 0px;
+  background-color: rgba(255, 255, 255, 0.03);
+  color: $overlay1;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.profile-btn:hover {
+  background-color: $surface1;
+  color: $text;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Active State: Performance (Red) */
+.profile-btn.active.perf {
+  background-image: linear-gradient(135deg, $red, $maroon);
+  color: $crust;
+  border-color: transparent;
+  box-shadow: 0 0 20px rgba(243, 139, 168, 0.4), 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Active State: Balanced (Blue) */
+.profile-btn.active.bal {
+  background-image: linear-gradient(135deg, $blue, $sapphire);
+  color: $crust;
+  border-color: transparent;
+  box-shadow: 0 0 20px rgba(137, 180, 250, 0.4), 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Active State: Power Saver (Green) */
+.profile-btn.active.save {
+  background-image: linear-gradient(135deg, $green, $teal);
+  color: $crust;
+  border-color: transparent;
+  box-shadow: 0 0 20px rgba(166, 227, 161, 0.4), 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Power Actions */
+.bat-power-actions {
+  margin-top: 5px;
+}
+
+/* Base Button Style */
+.pow-btn {
+  background-color: rgba(255, 255, 255, 0.03);
+  color: $subtext0;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.pow-btn:hover {
+  background-color: $surface1;
+  color: $text;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Session Buttons (Small Icons) */
+.pow-btn.session {
+  font-family: "Iosevka Nerd Font";
+  font-size: 22px;
+  padding: 14px 0px;
+}
+
+.pow-btn.lock:hover {
+  background-image: linear-gradient(135deg, $mauve, $pink);
+  color: $crust;
+  border-color: transparent;
+  box-shadow: 0 0 15px rgba(203, 166, 247, 0.3);
+}
+
+.pow-btn.suspend:hover {
+  background-image: linear-gradient(135deg, $blue, $sapphire);
+  color: $crust;
+  border-color: transparent;
+  box-shadow: 0 0 15px rgba(137, 180, 250, 0.3);
+}
+
+.pow-btn.logout:hover {
+  background-image: linear-gradient(135deg, $lavender, $blue);
+  color: $crust;
+  border-color: transparent;
+  box-shadow: 0 0 15px rgba(180, 190, 254, 0.3);
+}
+
+/* System Buttons (Wide with Labels) */
+.pow-btn.system {
+  padding: 14px 0px;
+}
+
+.pow-btn.system .pow-icon {
+  font-family: "Iosevka Nerd Font";
+  font-size: 20px;
+}
+
+.pow-btn.system .pow-lbl {
+  font-family: "JetBrains Mono";
+  font-weight: 800;
+  font-size: 13px;
+}
+
+/* Reboot Styling */
+.pow-btn.reboot:hover {
+  background-image: linear-gradient(135deg, $yellow, $peach);
+  border-color: transparent;
+  box-shadow: 0 0 15px rgba(249, 226, 175, 0.3);
+}
+
+.pow-btn.reboot:hover .pow-icon,
+.pow-btn.reboot:hover .pow-lbl {
+  color: $crust;
+}
+
+/* Shutdown Styling */
+.pow-btn.shutdown:hover {
+  background-image: linear-gradient(135deg, $red, $maroon);
+  border-color: transparent;
+  box-shadow: 0 0 15px rgba(243, 139, 168, 0.3);
+}
+
+.pow-btn.shutdown:hover .pow-icon,
+.pow-btn.shutdown:hover .pow-lbl {
+  color: $crust;
+}
+
+/* Tray */
+.tray {
+    /* 1. Inherit Dockbox Styles Manually */
+    background-color: transparent; 
+    border-radius: 12px; 
+    margin: 2px 2px;
+
+    /* 2. Sizing Fix (Centers icons vertically) */
+    padding: 8px 10px; 
+    min-height: 20px;
+}
+
+.tray:hover {
+    background-color: $surface0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-color: $overlay0;
+}
+
+
+/* Tray Menu (Right-click context menu) */
+menu {
+    background-color: $base;
+    border: 1px solid $surface1;
+    border-radius: 12px;
+    padding: 8px;
+    color: $text;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+menuitem {
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+menuitem:hover {
+    background-color: $surface1;
+    color: $mauve; 
+}
+
+separator {
+    background-color: $surface0;
+    min-height: 1px;
+    margin: 5px 0;
+}
+
+/* --- Notification Button (Left) --- */
+.notif-icon {
+    font-family: "Iosevka Nerd Font";
+    font-size: 18px;
+    color: $sapphire; /* Matches your search/media theme */
+    min-height: 24px;
+    min-width: 20px;
+    padding: 0px 2px;
+    transition: all 0.3s ease;
+    background: transparent;
+}
+
+.notif-icon:hover {
+    color: $sky;
+    text-shadow: 0 0 5px rgba(137, 220, 235, 0.5);
+}

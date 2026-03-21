@@ -1,0 +1,932 @@
+;; Workspace & Time
+(deflisten WORKSPACES :initial "[]" "bash ./scripts/workspaces.sh")
+
+(defpoll TIME :interval "1s" `date +\"%I:%M:%S %p\"`)
+(defpoll DATE :interval "1m" `date +\"%A, %B %d\"`)
+
+(defpoll ICON :interval "5m" `bash ./scripts/weather.sh --icon`)
+(defpoll TEMP :interval "5m" `bash ./scripts/weather.sh --temp`)
+(defpoll HEX :interval "5m" `bash ./scripts/weather.sh --hex`)
+(defpoll WEATHER_JSON :interval "5m" `bash ./scripts/weather.sh --json`)
+(defvar forecast_days '["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]')
+(defvar weather_view 0)
+
+;; Media
+(defpoll MEDIA :interval "0.2s" `bash ./scripts/media.sh`)
+(defpoll MUSIC_FULL :interval "0.2s" `bash ./scripts/music_info.sh`)
+(defpoll EQ_DATA :interval "0.2s" `bash ./scripts/equalizer.sh get`)
+
+;; System Info - Redesigned
+(defpoll WIFI_STATUS :interval "2s" `bash ./scripts/sys_info.sh --wifi-status`)
+(defpoll WIFI_ICON :interval "2s" `bash ./scripts/sys_info.sh --wifi-icon`)
+(defpoll WIFI_SSID :interval "2s" `bash ./scripts/sys_info.sh --wifi-ssid`)
+
+(defpoll BT_STATUS :interval "2s" `bash ./scripts/sys_info.sh --bt-status`)
+(defpoll BT_ICON :interval "2s" `bash ./scripts/sys_info.sh --bt-icon`)
+(defpoll BT_DEVICE :interval "2s" `bash ./scripts/sys_info.sh --bt-connected`)
+(defvar bt_optimistic_hide false)
+
+;; DATA VARIABLES FOR NETWORK WIDGET
+(defpoll BLUETOOTH_DATA :interval "1s" `bash ./scripts/bluetooth_panel_logic.sh --status`)
+(defvar connecting_mac "")
+
+(defpoll WIFI_DATA :interval "3s" :initial "{ \"power\": \"on\", \"connected\": \"null\", \"networks\": [] }" `bash ./scripts/wifi_panel_logic.sh`)
+(defvar net_mode "wifi")
+
+(defpoll SCHEDULE :interval "10m" 
+  "bash ~/.config/eww/bar/scripts/schedule/schedule_manager.sh")
+
+(defpoll CURRENT_VOL :interval "0.1s" `bash ./scripts/sys_info.sh --volume`)
+(defpoll VOL_ICON :interval "0.1s" `bash ./scripts/sys_info.sh --volume-icon`)
+(defpoll IS_MUTED :interval "0.2s" `bash ./scripts/sys_info.sh --is-muted`)
+
+(defpoll BATTERY_PERCENT :interval "10s" `bash ./scripts/sys_info.sh --battery-percent`)
+(defpoll BATTERY_ICON :interval "10s" `bash ./scripts/sys_info.sh --battery-icon`)
+(defpoll BATTERY_STATUS :interval "10s" `bash ./scripts/sys_info.sh --battery-status`)
+;; NEW: Power Profile Variable
+(defpoll POWER_PROFILE :interval "2s" `powerprofilesctl get`)
+
+(defpoll KB_LAYOUT :interval "0.5s" `bash ./scripts/sys_info.sh --kb-layout`)
+
+;; WIDGETS
+
+(defwidget search []
+    (box :class "dockbox"
+        (box :orientation "h" :spacing 10 :valign "center" :halign "center" 
+             :space-evenly "false" :vexpand "false" :hexpand "false"
+            (button :style "background-image: url('images/icons/search.svg')" 
+                    :class "genicon" 
+                    :onclick "bash ../../../../sessions/hyprland/scripts/rofi_show.sh")
+        )
+    )
+)
+
+(defwidget workspaces []
+    (box :class "dockbox"
+        (box :orientation "h" :spacing 5 :valign "center" :halign "center" 
+             :space-evenly "false" :vexpand "false" :hexpand "false"
+            
+            (for ws in WORKSPACES
+                (button :onclick "bash ~/.config/hypr/scripts/qs_manager.sh ${ws.id}"
+                        ;; Class is now dynamic: workspace-btn active/occupied/empty
+                        :class "workspace-btn ${ws.state}"
+                        ;; Tooltip shows the window name!
+                        :tooltip "Workspace ${ws.id}: ${ws.tooltip}"
+                    (label :text "${ws.id}")
+                )
+            )
+        ) 
+    )
+)
+
+(defwidget equalizer []
+    (box :class "eq-container" :orientation "v" :space-evenly false :spacing 15
+        
+        ;; HEADER ROW: Title + Apply Button + Preset Name
+        (box :orientation "h" :space-evenly false :valign "center"
+            
+            ;; Left: Title
+            (label :class "eq-header" :halign "start" :hexpand true :text "Equalizer")
+            
+            ;; Center/Right: Apply Button (Only highlighted if pending)
+            (button :class "eq-apply-btn ${EQ_DATA.pending == 'true' ? 'highlight' : ''}" 
+                    :onclick "bash ./scripts/equalizer.sh apply"
+                    :visible true
+                    ;; Change text based on state for extra clarity (Optional)
+                    {EQ_DATA.pending == "true" ? "Apply" : "Saved"}
+            )
+
+            ;; Right: Preset Name (with some margin left to separate from button)
+            (label :class "eq-preset-name" 
+                   :halign "end" 
+                   :style "margin-left: 15px;" 
+                   :text {EQ_DATA.preset})
+        )
+
+        ;; 10 Band Sliders
+        (box :class "eq-sliders" :orientation "h" :space-evenly true :spacing 10 :vexpand true
+            (eq_band :val {EQ_DATA.b1} :idx "1" :lbl "31")
+            (eq_band :val {EQ_DATA.b2} :idx "2" :lbl "63")
+            (eq_band :val {EQ_DATA.b3} :idx "3" :lbl "125")
+            (eq_band :val {EQ_DATA.b4} :idx "4" :lbl "250")
+            (eq_band :val {EQ_DATA.b5} :idx "5" :lbl "500")
+            (eq_band :val {EQ_DATA.b6} :idx "6" :lbl "1k")
+            (eq_band :val {EQ_DATA.b7} :idx "7" :lbl "2k")
+            (eq_band :val {EQ_DATA.b8} :idx "8" :lbl "4k")
+            (eq_band :val {EQ_DATA.b9} :idx "9" :lbl "8k")
+            (eq_band :val {EQ_DATA.b10} :idx "10" :lbl "16k")
+        )
+
+        ;; Presets Grid
+        (box :class "eq-presets" :orientation "v" :spacing 8
+            (box :orientation "h" :spacing 10 :space-evenly true
+                (preset_btn :name "Flat") (preset_btn :name "Bass") (preset_btn :name "Treble") (preset_btn :name "Vocal")
+            )
+            (box :orientation "h" :spacing 10 :space-evenly true
+                (preset_btn :name "Pop") (preset_btn :name "Rock") (preset_btn :name "Jazz") (preset_btn :name "Classic")
+            )
+        )
+    )
+)
+
+;; Helper widget for a single frequency band
+(defwidget eq_band [val idx lbl]
+    (box :orientation "v" :space-evenly false :spacing 5
+        (scale :class "eq-scale"
+               :orientation "v"
+               :flipped true
+               ;; REDUCED SENSITIVITY (From 24 to 12)
+               :min -12 
+               :max 12
+               :value val
+               :onchange "bash ./scripts/equalizer.sh set_band ${idx} {}")
+        (label :class "eq-band-label" :text lbl)
+    )
+)
+
+;; Helper widget for preset buttons
+(defwidget preset_btn [name]
+    (button :class "eq-preset-btn ${EQ_DATA.preset == name ? 'active' : ''}" 
+            :onclick "bash ./scripts/equalizer.sh preset ${name}" 
+            name)
+)
+
+(defwidget notification_btn []
+    (box :class "dockbox"
+        (box :orientation "h" :spacing 10 :valign "center" :halign "center" 
+             :space-evenly "false" :vexpand "false" :hexpand "false"
+            (button :class "notif-icon" 
+                    :onclick "swaync-client -t -sw"
+                    :onrightclick "swaync-client -d"
+                    :tooltip "Toggle Notifications"
+                    "")
+        )
+    )
+)
+
+(defwidget system []
+    (box :class "system-widget"
+         :orientation "h"
+         :spacing 10
+         :valign "center"
+         :halign "center"
+         :space-evenly "false"
+
+         ;; 1. Keyboard Layout
+         (box :class "sys-pill sys-kb" :orientation "h" :spacing 10 :space-evenly false
+            (label :class "sys-icon-kb" :text "󰌌")
+            (label :class "sys-text" :text KB_LAYOUT)
+         )
+
+         ;; 2. WiFi
+         (eventbox :onclick "bash ~/.config/hypr/scripts/qs_manager.sh toggle network"
+                   :onrightclick "nm-connection-editor &"
+                   :cursor "pointer"
+                   :tooltip {WIFI_STATUS == "enabled" ? (WIFI_SSID != "" ? "Connected to ${WIFI_SSID}" : "WiFi enabled") : "WiFi disabled"}
+             (box :class "sys-pill sys-wifi ${WIFI_STATUS == 'enabled' ? 'active' : ''}" 
+                  :orientation "h" :spacing 10 :space-evenly false
+                 (label :class "sys-icon-wifi" :text WIFI_ICON)
+                 (label :class "sys-text" 
+                        :text {WIFI_STATUS == "enabled" ? (WIFI_SSID != "" ? WIFI_SSID : "Disconnected") : "Off"}
+                        :limit-width 12)
+             )
+         )
+
+       ;; 3. Bluetooth (FIXED: Logic updated for consistent JSON types)
+         (box :class "sys-pill sys-bt ${BLUETOOTH_DATA.power == 'on' && BLUETOOTH_DATA.connected.mac != '' && bt_optimistic_hide == false ? 'active' : ''}" 
+              :orientation "h" 
+              :spacing 0 
+              :space-evenly false
+              
+              ;; PART A: The Icon (Always Visible)
+              (eventbox :onclick "bash ~/.config/hypr/scripts/qs_manager.sh toggle network"
+                        :onrightclick "blueman-manager &"
+                        :cursor "pointer"
+                        :tooltip {BLUETOOTH_DATA.power == "on" ? "Bluetooth On" : "Bluetooth Off"}
+                  (box :class "sys-bt-icon-box"
+                       (label :class "sys-icon-bt" :text BT_ICON)
+                  )
+              )
+              
+              ;; PART B: The Slide-Out Content
+              (revealer :transition "slideright"
+                        ;; FIX: Check if mac is not empty string, instead of checking for "null"
+                        :reveal {BLUETOOTH_DATA.power == 'on' && BLUETOOTH_DATA.connected.mac != '' && bt_optimistic_hide == false}
+                        :duration "600ms"
+                  (box :orientation "h" :space-evenly false
+                      
+                      ;; Spacer
+                      (box :width 10)
+
+                      ;; Device Name
+                      (eventbox :onclick "bash ~/.config/hypr/scripts/qs_manager.sh toggle network"
+                                :onrightclick "blueman-manager &"
+                                :cursor "pointer"
+                          (label :class "sys-text" 
+                                 ;; FIX: Safe access because connected is always an object now
+                                 :text {BLUETOOTH_DATA.connected.name}
+                                 :limit-width 12)
+                      )
+
+                      ;; Disconnect Button
+                      (button :class "sys-bt-disconnect"
+                              ;; FIX: Simplified logic now that structure is consistent
+                              :onclick "eww --config ~/.config/eww/bar update bt_optimistic_hide=true; bash ./scripts/bluetooth_panel_logic.sh --disconnect '${BLUETOOTH_DATA.connected.mac}'"
+                              :tooltip "Disconnect"
+                              "")
+                  )
+              )
+         )    
+
+    ;; 4. Volume
+         (eventbox :onrightclick "bash ./scripts/sys_info.sh --toggle-mute"
+                   :onclick "pavucontrol &"
+                   :cursor "pointer"
+                   :tooltip "Volume: ${CURRENT_VOL}%"
+             (box :class "sys-pill sys-vol ${IS_MUTED == 'true' ? 'muted' : ''}" :orientation "h" :spacing 10 :space-evenly false
+                 (label :class "sys-icon-vol" 
+                        :text VOL_ICON)
+                 (label :class "sys-text" :text "${CURRENT_VOL}%")
+             )
+         )
+
+        ;; 5. Battery 
+         (eventbox :onclick "bash ~/.config/hypr/scripts/qs_manager.sh toggle battery"
+                   :cursor "pointer"
+             (box :class "sys-pill sys-bat" :orientation "h" :spacing 10 :space-evenly false
+                  :tooltip "${BATTERY_STATUS}: ${BATTERY_PERCENT}%"
+                 (label :class "sys-icon-bat ${BATTERY_PERCENT < 20 ? 'low' : ''}" 
+                        :text BATTERY_ICON)
+                 (label :class "sys-text" :text "${BATTERY_PERCENT}%")
+             )
+         )
+    )
+)
+(defwidget systray_widget []
+    (systray :class "tray" 
+             :icon-size 22 
+             :spacing 10
+             :orientation "h"
+             :space-evenly "false")
+)
+
+(defwidget network_popup []
+  (box :class "animated-gradient-border" 
+       :style "background-image: linear-gradient(135deg, #cba6f7, #74c7ec); padding: 2px;"
+    (box :class "net-window-container" :orientation "v" :space-evenly true :spacing 12
+      
+      ;; ============================================
+      ;; 1. WIFI CARD
+      ;; ============================================
+      (box :class "net-card" :orientation "h" :space-evenly false
+        ;; --- LEFT: Status Hero (Gradient) ---
+        (box :class "net-hero-side wifi-gradient" :orientation "v" :space-evenly false :width 240
+          ;; Top: Title & Toggle
+          (box :orientation "h" :space-evenly false :class "net-card-header"
+            (label :class "net-card-title dark-text" :text "Wi-Fi" :hexpand true :halign "start")
+            (button :class "net-card-toggle ${WIFI_DATA.power == 'on' ? 'active' : ''}" 
+                    :onclick "nmcli radio wifi ${WIFI_DATA.power == 'on' ? 'off' : 'on'}" 
+                    {WIFI_DATA.power == 'on' ? "" : ""})
+          )
+          
+          ;; Middle: Main Status Info
+          (box :orientation "v" :space-evenly false :vexpand true :valign "center" :visible {WIFI_DATA.power == 'on'}
+             ;; Connected State
+             (box :orientation "v" :space-evenly false :visible {WIFI_DATA.connected != "null"} :spacing 5
+                (label :class "net-hero-icon dark-text" :text {WIFI_DATA.connected.icon} :style "margin-right: 28px;")
+                (label :class "net-hero-ssid dark-text" :text {WIFI_DATA.connected.ssid} :limit-width 15 :wrap true)
+                (label :class "net-hero-sub dark-text" :text "${WIFI_DATA.connected.signal}% Signal • ${WIFI_DATA.connected.security}")
+                (button :class "net-hero-btn dark-btn" :onclick "nmcli device disconnect wlp2s0" "Disconnect")
+             )
+             ;; Disconnected State
+             (box :orientation "v" :visible {WIFI_DATA.connected == "null"} :spacing 5
+                (label :class "net-hero-icon dark-text" :text "󰤮")
+                (label :class "net-hero-ssid dark-text" :text "Disconnected")
+             )
+          )
+          ;; Off State
+          (label :visible {WIFI_DATA.power == 'off'} 
+                 :class "net-hero-ssid dark-text" 
+                 :text "Radio Off" 
+                 :valign "center" :vexpand true)
+
+          ;; Bottom: Settings Link
+          (button :class "net-hero-link dark-text" :onclick "nm-connection-editor &" "Settings ")
+        )
+
+        ;; --- RIGHT: Network List ---
+        (box :class "net-list-side" :orientation "v" :space-evenly false :hexpand true
+          (label :class "net-list-header" :text "Available Networks" :halign "start")
+          (scroll :vscroll true :hscroll false :vexpand true :class "net-scroll-area"
+            (box :orientation "v" :spacing 8 :space-evenly false
+              (for net in {WIFI_DATA.networks}
+                (box :class "net-item" :orientation "h" :space-evenly false :spacing 10
+                  (label :class "net-item-icon wifi-color" :text {net.icon})
+                  (box :orientation "v" :hexpand true :valign "center"
+                    (label :class "net-item-ssid" :text {net.ssid} :halign "start" :limit-width 20)
+                    (label :class "net-item-sec" :text {net.security} :halign "start")
+                  )
+                  (button :class "net-item-btn" :onclick "nmcli device wifi connect ${net.ssid} &" "Connect")
+                )
+              )
+              (label :visible {arraylength(WIFI_DATA.networks) == 0 && WIFI_DATA.power == 'on'}
+                     :class "net-empty" :text "Scanning...")
+            )
+          )
+        )
+      )
+
+      ;; ============================================
+      ;; 2. BLUETOOTH CARD
+      ;; ============================================
+      (box :class "net-card" :orientation "h" :space-evenly false
+        ;; --- LEFT: Status Hero (Gradient) ---
+        (box :class "net-hero-side bt-gradient" :orientation "v" :space-evenly false :width 240
+          ;; Top: Title & Toggle
+          (box :orientation "h" :space-evenly false :class "net-card-header"
+            (label :class "net-card-title dark-text" :text "Bluetooth" :hexpand true :halign "start")
+            (button :class "net-card-toggle ${BLUETOOTH_DATA.power == 'on' ? 'active' : ''}" 
+                    :onclick "bash ./scripts/bluetooth_panel_logic.sh --toggle" 
+                    {BLUETOOTH_DATA.power == 'on' ? "" : ""})
+          )
+          
+          ;; Middle: Main Status Info
+          (box :orientation "v" :space-evenly false :vexpand true :valign "center" :visible {BLUETOOTH_DATA.power == 'on'}
+             ;; Connected State
+             ;; FIX: Check mac != "" instead of != "null"
+             (box :orientation "v" :space-evenly false :visible {BLUETOOTH_DATA.connected.mac != ""} :spacing 5
+                (label :class "net-hero-icon dark-text" :text {BLUETOOTH_DATA.connected.icon})
+                (label :class "net-hero-ssid dark-text" :text {BLUETOOTH_DATA.connected.name} :limit-width 15 :wrap true)
+                (label :class "net-hero-sub dark-text" 
+                       :visible {BLUETOOTH_DATA.connected.battery != "0"} 
+                       :text "Battery: ${BLUETOOTH_DATA.connected.battery}%")
+                (button :class "net-hero-btn dark-btn" 
+                        :onclick "bash ./scripts/bluetooth_panel_logic.sh --disconnect ${BLUETOOTH_DATA.connected.mac}" 
+                        "Disconnect")
+             )
+             ;; Disconnected State
+             ;; FIX: Check mac == "" instead of == "null"
+             (box :orientation "v" :visible {BLUETOOTH_DATA.connected.mac == ""} :spacing 5
+                (label :class "net-hero-icon dark-text" :text "󰂲")
+                (label :class "net-hero-ssid dark-text" :text "Ready to Pair")
+             )
+          )
+          ;; Off State
+          (label :visible {BLUETOOTH_DATA.power == 'off'} 
+                 :class "net-hero-ssid dark-text" 
+                 :text "Disabled" 
+                 :valign "center" :vexpand true)
+
+          ;; Bottom: Settings Link
+          (button :class "net-hero-link dark-text" :onclick "blueman-manager &" "Manager ")
+        )
+
+        ;; --- RIGHT: Device List ---
+        ;; (This part usually stays the same, but included for completeness)
+        (box :class "net-list-side" :orientation "v" :space-evenly false :hexpand true
+          (label :class "net-list-header" :text "Available Devices" :halign "start")
+          (scroll :vscroll true :hscroll false :vexpand true :class "net-scroll-area"
+            (box :orientation "v" :spacing 8 :space-evenly false
+              (for dev in {BLUETOOTH_DATA.devices}
+                (box :class "net-item" :orientation "h" :space-evenly false :spacing 10
+                  (label :class "net-item-icon bt-color" :text {dev.icon})
+                  (box :orientation "v" :hexpand true :valign "center"
+                    (label :class "net-item-ssid" :text {dev.name} :halign "start" :limit-width 20)
+                    (label :class "net-item-sec" :text {dev.mac} :halign "start")
+                  )
+                  (button :class "net-item-btn ${connecting_mac == dev.mac ? 'pulsing' : ''}" 
+                          :onclick "eww --config ~/.config/eww/bar update bt_optimistic_hide=false; bash ./scripts/bluetooth_panel_logic.sh --connect ${dev.mac} &" 
+                          {connecting_mac == dev.mac ? "..." : dev.action})
+                )
+              )
+              (label :visible {arraylength(BLUETOOTH_DATA.devices) == 0 && BLUETOOTH_DATA.power == 'on'}
+                     :class "net-empty" :text "Scanning...")
+            )
+          )
+        )
+      )    )
+  )
+)
+
+(defwidget media []
+    ;; ADDED CLASS: bar-media-playing when status is Playing
+    (box :class "dockbox ${MUSIC_FULL.status == 'Playing' ? 'bar-media-playing' : ''}" 
+         :visible {MUSIC_FULL.status != "Stopped"}
+         :orientation "h" 
+         :spacing 10 
+         :valign "fill" 
+         :halign "center" 
+         :space-evenly "false"
+
+        (eventbox :onclick "bash ~/.config/hypr/scripts/qs_manager.sh toggle music"
+            (box :orientation "h" :spacing 10 :space-evenly "false"
+                ;; Art
+                (box :class "album_art" 
+                     :style "background-image: url('${MUSIC_FULL.artUrl}');"
+                     :valign "center"
+                     :width 30
+                     :height 30)
+
+                ;; Text Info
+                (box :orientation "v" 
+                     :valign "center" 
+                     :spacing 0 
+                     :space-evenly "false"
+                     (label :class "song_title" 
+                            :halign "start" 
+                            :limit-width 20 
+                            :text {MUSIC_FULL.title})
+                     
+                     ;; NEW: Time String (e.g. 1:20 / 3:00)
+                     (label :class "song_time_bar" 
+                            :halign "start" 
+                            :text {MUSIC_FULL.timeStr}))
+            )
+        )
+
+        ;; Controls
+        (box :orientation "h" 
+             :spacing 2 
+             :valign "center"
+             :halign "center"
+             :space-evenly "false"
+             (button :class "media_btn" :onclick "playerctl previous" "󰒮")
+             (button :class "media_btn_play" 
+                     :onclick "playerctl play-pause" 
+                     {MUSIC_FULL.status == "Playing" ? "󰏤" : "󰐊"})
+             (button :class "media_btn" :onclick "playerctl next" "󰒭"))
+    )
+)
+(defwidget weather [] 
+    (eventbox :onclick "bash ~/.config/hypr/scripts/qs_manager.sh toggle calendar"
+        (box :class "dockbox"
+            (box :class "clockbox" :orientation "v" :spacing 0 :valign "center" 
+                 :halign "start" :space-evenly "false" :vexpand "false" :hexpand "false"
+                (label :class "time" :halign "start" :wrap "true" :limit-width 25 :text TIME)
+                (label :class "date" :halign "start" :wrap "true" :limit-width 25 :text DATE)
+            )
+            (box :class "weatherbox" :orientation "h" :spacing 0 :valign "center" 
+                 :halign "end" :space-evenly "false" :vexpand "false" :hexpand "false"
+                (label :class "weathericon" :style "color: ${HEX};" :text ICON)
+                (label :class "weathertemp" :text TEMP)
+            )
+        )
+    )
+)
+
+(defwidget schedule_horizontal []
+  (box :class "schedule-horiz-container" :orientation "v" :space-evenly false :spacing 12
+       
+       ;; HEADER
+       (box :orientation "h" :space-evenly false
+            (box :orientation "h" :space-evenly false :spacing 8 :hexpand true :halign "start"
+                (label :class "schedule-header-icon" :text "")
+                (label :class "schedule-header" :text {SCHEDULE.header})
+            )
+            (box :class "schedule-controls" :halign "end"
+                (button :class "sch-nav-btn link" 
+                        :onclick "xdg-open '${SCHEDULE.link}' &" 
+                        :tooltip "Open Schedule in Browser"
+                        "")
+            )
+       )
+
+       ;; SCROLL AREA
+       (scroll :hscroll true :vscroll false :class "schedule-scroll-horiz" :vexpand true
+            (box :orientation "h" :spacing 0 :space-evenly false
+                 (for item in {SCHEDULE.lessons}
+                      (box :orientation "h" :space-evenly false
+                         
+                          ;; --- CLASS CARD ---
+                          (box :visible {item.type == "class"}
+                              :class "horiz-card ${EWW_TIME >= item.start && EWW_TIME <= item.end ? 'active' : ''} ${item.is_compact ? 'compact' : ''}" 
+                              :orientation "v" 
+                              :space-evenly false 
+                              :hexpand false
+                              :width {item.width}
+                              :style {item.type == "class" ? 
+                                     (EWW_TIME >= item.start && EWW_TIME <= item.end ? 
+                                     "background-image: linear-gradient(to right, rgba(203, 166, 247, 0.35) ${round((EWW_TIME - item.start) / (item.end - item.start) * 100, 0)}%, rgba(255, 255, 255, 0.03) ${round((EWW_TIME - item.start) / (item.end - item.start) * 100, 0)}%);" : 
+                                     (EWW_TIME > item.end ? 
+                                      "background-image: linear-gradient(to right, rgba(203, 166, 247, 0.15), rgba(203, 166, 247, 0.15)); opacity: 0.5;" : 
+                                      "background-image: none;")) 
+                                     : ""}
+                              
+                              ;; LAYOUT FOR NORMAL WIDTH
+                              (box :visible {item.is_compact == false} :orientation "v" :space-evenly false
+                                   
+                                   ;; ROW 1: Time (Full Width)
+                                   (box :orientation "h" :space-evenly false :spacing 4 :halign "start"
+                                        (label :class "card-icon-time" :text "󰅐 ")
+                                        (label :class "sch-time" :text {item.time} :limit-width {item.char_limit})
+                                   )
+
+                                   ;; ROW 2: Meta Info (Teacher + Room)
+                                   (box :orientation "h" :space-evenly false :spacing 10 :class "sch-teacher-box"
+                                        
+                                        ;; Teacher
+                                        (box :visible {item.teacher != ""} :orientation "h" :space-evenly false :spacing 4
+                                            (label :class "sch-teacher-icon" :text "")
+                                            (label :class "sch-teacher-text" :text {item.teacher} :limit-width {item.char_limit})
+                                        )
+
+                                        ;; Room (Moved here)
+                                        (box :orientation "h" :space-evenly false :spacing 2
+                                            (label :class "sch-room-icon" :style "color: #fab387; font-size: 10px;" :text "")
+                                            (label :class "sch-room-text" :style "font-size: 10px; font-weight: bold; color: #fab387;" :text {item.room})
+                                        )
+                                   )
+
+                                   ;; ROW 3: Subject
+                                   (box :class "card-sep" :height 1 :hexpand true :style "margin-top: 4px;")
+                                   (label :class "sch-subject" :halign "start" :wrap true :text {item.subject} :limit-width {item.char_limit})
+                              )
+
+                              ;; LAYOUT FOR COMPACT (SHORT) WIDTH
+                              (box :visible {item.is_compact == true} :orientation "v" :space-evenly true :valign "center"
+                                   (label :class "sch-subject-compact" :text {item.subject} :limit-width {item.char_limit})
+                                   (label :class "sch-room-compact" :style "font-size: 9px; opacity: 0.7;" :text {item.room})
+                              )
+                          )
+
+                          ;; --- GAP SPACER ---
+                          (box :visible {item.type == "gap"}
+                              :class "schedule-gap"
+                              :hexpand false
+                              :width {item.width}
+                              :height 90
+                              :tooltip {item.desc})
+                      )
+                 )
+                 (label :visible {arraylength(SCHEDULE.lessons) == 0} 
+                        :class "sch-empty" :text "No classes scheduled")
+            )
+       )
+  )
+)
+
+(defwidget weather_calendar_popup []
+  (box :class "animated-gradient-border" 
+       :style "background-image: linear-gradient(135deg, ${WEATHER_JSON.forecast[weather_view].hex}, #1e1e2e); padding: 2px;"
+    
+    (box :class "cal-window-container" :orientation "v" :space-evenly false
+      
+      ;; --- ROW 1: CALENDAR (Left) + WEATHER (Right) ---
+      (box :orientation "h" :space-evenly false :height 300
+           
+           ;; 1. Calendar
+           (box :class "cal-left-side" :orientation "v" :space-evenly false :width 300
+                (box :class "cal-hero-box" :orientation "v" :space-evenly false
+                     (label :class "cal-hero-time" :text {formattime(EWW_TIME, "%H:%M")})
+                     (label :class "cal-hero-date" :text {formattime(EWW_TIME, "%A, %d %B")})
+                )
+                (box :class "cal-widget-container"
+                     (calendar :class "cal-widget" 
+                               :day {formattime(EWW_TIME, "%d")} 
+                               :year {formattime(EWW_TIME, "%Y")})
+                )
+           )
+           
+           ;; 2. Weather
+           (box :class "cal-right-side" :orientation "v" :space-evenly false :hexpand true
+                :style "background-image: linear-gradient(to bottom left, rgba(30, 30, 46, 0.9), rgba(30, 30, 46, 0.5)), url('images/weather_bg_mask.png');"
+                
+                ;; Weather Header
+                (box :class "weather-header" :orientation "h" :space-evenly false
+                     (label :class "weather-day-big" :hexpand true :halign "start" 
+                            :text {WEATHER_JSON.forecast[weather_view].day_full})
+                     (box :class "weather-nav-box" :spacing 5
+                          (button :class "weather-nav-btn" 
+                                  :active {weather_view > 0} 
+                                  :onclick "eww update --config ~/.config/eww/bar weather_view=${weather_view > 0 ? weather_view - 1 : 0}" 
+                                  "")
+                          (button :class "weather-nav-btn" 
+                                  :active {weather_view < 4}
+                                  :onclick "eww update --config ~/.config/eww/bar weather_view=${weather_view < 4 ? weather_view + 1 : 4}" 
+                                  "")
+                     )
+                )
+
+                ;; Weather Info
+                (box :class "weather-main-info" :orientation "h" :space-evenly false :valign "center" :vexpand true
+                     (label :class "weather-icon-huge" 
+                            :halign "start" :hexpand true
+                            :style "color: ${WEATHER_JSON.forecast[weather_view].hex};" 
+                            :text {WEATHER_JSON.forecast[weather_view].icon})
+                     
+                     (box :orientation "v" :halign "end" :space-evenly false
+                          (label :class "weather-temp-huge" :halign "end" :text "${WEATHER_JSON.forecast[weather_view].max}°")
+                          (label :class "weather-desc" :halign "end" :text {WEATHER_JSON.forecast[weather_view].desc})
+                          (label :class "weather-feels" :halign "end" :text "Feels like ${WEATHER_JSON.forecast[weather_view].feels_like}°")
+                     )
+                )
+
+                ;; Stats Grid
+                (box :class "weather-stats-grid" :orientation "h" :space-evenly true :spacing 10
+                     (weather_pill :icon "" :val "${WEATHER_JSON.forecast[weather_view].wind} m/s" :lbl "Wind")
+                     (weather_pill :icon "" :val "${WEATHER_JSON.forecast[weather_view].humidity}%" :lbl "Hum")
+                     (weather_pill :icon "" :val "${WEATHER_JSON.forecast[weather_view].pop}%" :lbl "Rain")
+                )
+
+                ;; Hourly
+                (box :class "weather-hourly-box" :orientation "v" :space-evenly false
+                     (label :class "hourly-title" :text "Forecast" :halign "start")
+                     (box :orientation "h" :spacing 0 :space-evenly true
+                          (for h in {WEATHER_JSON.forecast[weather_view].hourly}
+                               (box :class "hourly-item" :orientation "v" :spacing 5 :space-evenly false
+                                    (label :class "h-time" :text {h.time})
+                                    (label :class "h-icon" :style "color: ${h.hex};" :text {h.icon})
+                                    (label :class "h-temp" :text "${h.temp}°")
+                               )
+                          )
+                     )
+                )
+           )
+      )
+
+      ;; --- ROW 2: SCHEDULE HORIZONTAL (Bottom) ---
+      (box :orientation "v" :space-evenly false :height 140
+           (schedule_horizontal)
+      )
+    )
+  )
+);; Helper for Weather Pills
+
+(defwidget weather_pill [icon val lbl]
+  (box :class "weather-pill" :orientation "v" :space-evenly false
+    (label :class "wp-icon" :text icon)
+    (label :class "wp-val" :text val)
+    (label :class "wp-lbl" :text lbl)
+  )
+)
+
+
+(defwidget bar_layout []
+    (centerbox :orientation "h"
+            :class "bar_class"
+         (box :orientation "h"
+              :space-evenly false
+              :halign "start"
+              :spacing 2
+              :style "padding-left: 10px;"
+            (search)
+	    (notification_btn)
+            (workspaces)
+            (media)
+         )
+
+        (box :orientation "h" 
+             :space-evenly false 
+             :halign "center"
+            (weather)
+        )
+
+        (box :orientation "h" 
+             :space-evenly false 
+             :halign "end" 
+             :spacing 0
+             :style "padding-right: 10px;"
+             (systray_widget)        
+             (system)
+        )
+    )
+);; MUSIC POPUP
+(defwidget music_popup []
+    ;; OUTER BOX: The Animated Gradient "Border"
+    (box :class "animated-gradient-border"
+         :orientation "v"
+         :space-evenly false
+         ;; Dynamic Gradient Background + 3px padding acts as border width
+         :style "background-image: ${MUSIC_FULL.grad}; padding: 3px;"
+         
+        ;; INNER BOX: The Actual Content Window
+        (box :class "music-window-box" 
+             :orientation "v" 
+             :space-evenly false
+             :style "background-color: #1e1e2e;" 
+             
+            (overlay
+                ;; LAYER 1: Background Blur Image
+                (box :class "music-bg-blur" 
+                     :vexpand true 
+                     :hexpand true
+                     :style "background-image: url('${MUSIC_FULL.blur}');")
+
+                ;; LAYER 2: UI Content
+                (box :class "music-content" :orientation "v" :space-evenly false :spacing 0
+                    
+                    ;; --- Top Info Section ---
+                    (box :orientation "h" :space-evenly false :spacing 25 :height 220
+                          
+                          ;; Vinyl Cover Art (with Glow Animation)
+                          (box :class "music-cover-art ${MUSIC_FULL.status == 'Playing' ? 'playing' : 'paused'}" 
+                               :style "background-image: url('${MUSIC_FULL.artUrl}');"
+                               :width 220 :height 220 :valign "center")
+
+                          ;; Text & Controls
+                          (box :orientation "v" :space-evenly false :hexpand true :valign "center" :spacing 15
+                              (box :orientation "v" :spacing 6
+                                   ;; TITLE
+                                   (label :class "music-title" 
+                                          :halign "start" 
+                                          :wrap true 
+                                          :limit-width 35 
+                                          :style "color: ${MUSIC_FULL.textColor};"
+                                          :text "${MUSIC_FULL.title}")
+                                   
+                                   ;; ARTIST
+                                   (label :class "music-artist" 
+                                          :halign "start" 
+                                          :wrap true 
+                                          :limit-width 30 
+                                          :text "BY ${MUSIC_FULL.artist}") 
+                                   
+                                   ;; NEW: Metadata Pills (Source | Device)
+                                   (box :orientation "h" :spacing 10 :halign "start"
+                                    (box :class "meta-pill" :orientation "h" :space-evenly false :spacing 6 :valign "center" :halign "start" :hexpand false
+                                         (label :class "meta-icon" :text "${MUSIC_FULL.deviceIcon}" :valign "center")
+                                         (label :class "meta-text" :text "${MUSIC_FULL.deviceName}" :limit-width 25 :valign "center")
+                                    )
+                                    (label :class "music-source" :text "VIA ${MUSIC_FULL.source}" :valign "center" :halign "start")
+                                   )
+                                                            
+                              )                                
+                              ;; Progress Bar
+                              (box :class "music-progress-area" :orientation "v" :space-evenly false
+                                   (scale :class "music-progress-bar ${MUSIC_FULL.status == 'Playing' ? 'playing' : ''}" 
+                                          :min 0 :max 100 :value {MUSIC_FULL.percent}
+                                          :onchange "bash ./scripts/player_control.sh seek {} ${MUSIC_FULL.length} ${MUSIC_FULL.playerName}")
+                                   (box :orientation "h" :halign "fill"
+                                     (label :class "music-time" :text {MUSIC_FULL.positionStr} :halign "start")
+                                     (label :class "music-time" :text {MUSIC_FULL.lengthStr} :halign "end")
+                                   )
+                              )
+                              
+                              ;; Media Controls
+                              (box :class "music-controls" :orientation "h" :halign "center" :spacing 30
+                                   (button :class "ctrl-btn" :onclick "playerctl previous" "")
+                                   (button :class "play-btn-big" :onclick "playerctl play-pause" {MUSIC_FULL.status == "Playing" ? "" : ""})
+                                   (button :class "ctrl-btn" :onclick "playerctl next" "")
+                              )
+                          )
+                    )
+
+                    ;; --- Separator ---
+                    (box :class "music-sep-h" :height 2 :vexpand false)
+
+                    ;; --- Equalizer ---
+                    (box :vexpand false
+                        (equalizer)
+                    )
+                )
+            )
+        )
+    )
+)
+
+(defwidget battery_popup []
+  (box :class "animated-gradient-border"
+       ;; Dynamic Gradient Logic:
+       ;; 1. If Charging -> Green to Teal
+       ;; 2. If < 20% -> Red to Maroon
+       ;; 3. Else -> Sapphire to Blue
+       :style "background-image: linear-gradient(135deg, ${EWW_BATTERY.BAT0.status == 'Charging' ? '#a6e3a1, #94e2d5' : (EWW_BATTERY.BAT0.capacity < 20 ? '#f38ba8, #eba0ac' : '#74c7ec, #89b4fa')}); padding: 2px;"
+       
+    (box :class "bat-window-container" :orientation "h" :space-evenly false
+      
+      ;; --- LEFT: VISUAL GAUGE ---
+      (box :class "bat-left-panel ${EWW_BATTERY.BAT0.status == 'Charging' ? 'charging' : (EWW_BATTERY.BAT0.capacity < 20 ? 'critical' : 'normal')}" 
+           :width 220
+           :orientation "v" 
+           :space-evenly true
+           :valign "fill"
+
+           (overlay
+              (circular-progress :class "bat-circle"
+                                 :value {EWW_BATTERY.BAT0.capacity}
+                                 :thickness 10
+                                 :start-at 75
+                                 :clockwise true)
+               
+              (box :orientation "v" :valign "center" :halign "center" :space-evenly false
+                   (label :class "bat-left-icon ${EWW_BATTERY.BAT0.status == 'Charging' ? 'anim-charging' : ''}" 
+                          :text {EWW_BATTERY.BAT0.status == 'Charging' ? "󰂄" : 
+                                (EWW_BATTERY.BAT0.capacity < 20 ? "󰂃" : "󰁹")})
+                   (label :class "bat-left-text" :text "${EWW_BATTERY.BAT0.capacity}%")
+              )
+           )
+      )
+
+      ;; --- RIGHT: INFO & CONTROLS ---
+      (box :class "bat-right-panel" :orientation "v" :space-evenly false :hexpand true
+           
+           ;; 1. Status Text Header
+           (box :class "bat-info-header" :orientation "v" :space-evenly false :vexpand true :valign "center"
+                (label :class "bat-info-title" :halign "start" 
+                       :text {EWW_BATTERY.BAT0.status == 'Charging' ? "Charging" : 
+                              (EWW_BATTERY.BAT0.capacity > 98 ? "Fully Charged" : "Discharging")})
+                (label :class "bat-info-sub" :halign "start" 
+                       :text {EWW_BATTERY.BAT0.status == 'Charging' ? "AC Power Connected" : "On Battery Power"})
+           )
+
+           ;; 2. Power Profile Switcher
+           (label :class "bat-pow-title" :halign "start" :text "Energy Profile")
+           (box :class "bat-profile-switcher" :orientation "h" :spacing 10 :space-evenly true
+              (button :class "profile-btn perf ${POWER_PROFILE == 'performance' ? 'active' : ''}" 
+                      :onclick "powerprofilesctl set performance & eww update --config ~/.config/eww/bar POWER_PROFILE='performance'"
+                      :tooltip "Performance"
+                      "")
+              (button :class "profile-btn bal ${POWER_PROFILE == 'balanced' ? 'active' : ''}" 
+                      :onclick "powerprofilesctl set balanced & eww update --config ~/.config/eww/bar POWER_PROFILE='balanced'"
+                      :tooltip "Balanced"
+                      "")
+              (button :class "profile-btn save ${POWER_PROFILE == 'power-saver' ? 'active' : ''}" 
+                      :onclick "powerprofilesctl set power-saver & eww update --config ~/.config/eww/bar POWER_PROFILE='power-saver'"
+                      :tooltip "Power Saver"
+                      "")
+           )
+
+           ;; 3. Power Actions
+           (label :class "bat-pow-title" :halign "start" :style "margin-top: 15px;" :text "Power Actions")
+           
+           (box :class "bat-power-actions" :orientation "v" :spacing 10 :space-evenly false
+              (box :orientation "h" :spacing 10 :space-evenly true
+                  (button :class "pow-btn session lock" :onclick "hyprlock &" :tooltip "Lock Screen" "")
+                  (button :class "pow-btn session suspend" :onclick "hyprlock & systemctl suspend" :tooltip "Suspend" "ᶻ 𝗓 𐰁")
+                  (button :class "pow-btn session logout" :onclick "loginctl terminate-user $USER" :tooltip "Logout" "󰗽")
+              )
+              (box :orientation "h" :spacing 10 :space-evenly true
+                  (button :class "pow-btn system reboot" :onclick "systemctl reboot" 
+                      (box :orientation "h" :space-evenly false :halign "center" :spacing 10
+                          (label :class "pow-icon" :text "󰑓")
+                          (label :class "pow-lbl" :text "Reboot")
+                      )
+                  )
+                  (button :class "pow-btn system shutdown" :onclick "shutdown now" 
+                      (box :orientation "h" :space-evenly false :halign "center" :spacing 10
+                          (label :class "pow-icon" :text "")
+                          (label :class "pow-lbl" :text "Shutdown")
+                      )
+                  )
+              )
+           )
+      )
+    )
+  )
+)
+
+(defwindow battery_win
+    :monitor 0
+    :geometry (geometry :x "10px" 
+                        :y "10px" 
+                        :width "520px"  
+                        :height "330px" 
+                        :anchor "top right")
+    :stacking "fg"
+    :exclusive false
+    :namespace "battery_win"
+    (battery_popup))
+
+(defwindow bar
+    :monitor 0
+    :geometry (geometry :x "0%"
+                        :y "10px"
+                        :width "100%"
+                        :height "40px"
+                        :anchor "top center")
+    :stacking "bg"
+    :exclusive true
+    :wm-ignore false
+    (bar_layout))
+
+(defwindow music_win
+    :monitor 0
+    :geometry (geometry :x "12px" :y "10px" :width "700px" :height "620px" :anchor "top left")
+    :stacking "fg"
+    :namespace "music_win"
+    (music_popup))
+
+;; COMBINED NETWORK WINDOW
+(defwindow network_win
+    :monitor 0
+    :geometry (geometry :x "10px" 
+                        :y "10px" 
+                        :width "750px" 
+                        :height "600px" 
+                        :anchor "top right")
+    :stacking "fg"
+    :exclusive false
+    :namespace "network_win"
+    (network_popup))
+
+(defwindow calendar_win
+    :monitor 0
+    :geometry (geometry :x "0%" 
+                        :y "10px" 
+                        :width "800px" 
+                        :height "500px" 
+                        :anchor "top center")
+    :stacking "fg"
+    :exclusive false
+    :namespace "calendar_win"
+    (weather_calendar_popup))

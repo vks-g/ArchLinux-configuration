@@ -1,0 +1,44 @@
+;; VARIABLES
+(defvar volume_value 0)
+(defvar volume_icon "")
+
+;; WINDOW DEFINITION
+(defwindow volume_osd
+  :monitor 0
+  :geometry (geometry :x "0%"
+                      :y "85%" ;; Slightly higher up (Matched to Brightness)
+                      :width "320px" ;; A bit wider (Matched to Brightness)
+                      :height "60px"
+                      :anchor "top center")
+  :stacking "overlay"
+  :exclusive false
+  :focusable false
+  :namespace "volume_osd"
+  (volume_widget))
+
+;; WIDGET LAYOUT
+(defwidget volume_widget []
+  ;; The container itself acts as the background, no inner pills.
+  (box :class "osd-container"
+       :orientation "h"
+       :space-evenly false
+       :valign "center"
+       :halign "center"
+    
+    ;; Icon
+    (label :class "osd-icon" 
+           :text volume_icon)
+    
+    ;; Progress Bar
+    (scale :class "osd-scale"
+           :min 0
+           :max 100
+           :value volume_value
+           :active false
+           :orientation "h")
+           
+    ;; Text Label
+    (label :class "osd-text"
+           :text "${volume_value}%")
+  )
+)

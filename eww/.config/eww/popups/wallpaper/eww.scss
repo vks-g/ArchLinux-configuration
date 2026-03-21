@@ -1,0 +1,179 @@
+/* --- CATPPUCCIN MOCHA PALETTE --- */
+$rosewater: #f5e0dc;
+$flamingo: #f2cdcd;
+$pink: #f5c2e7;
+$mauve: #cba6f7;
+$red: #f38ba8;
+$maroon: #eba0ac;
+$peach: #fab387;
+$yellow: #f9e2af;
+$green: #a6e3a1;
+$teal: #94e2d5;
+$sky: #89dceb;
+$sapphire: #74c7ec;
+$blue: #89b4fa;
+$lavender: #b4befe;
+$text: #cdd6f4;
+$subtext1: #bac2de;
+$subtext0: #a6adc8;
+$overlay2: #9399b2;
+$overlay1: #7f849c;
+$overlay0: #6c7086;
+$surface2: #585b70;
+$surface1: #45475a;
+$surface0: #313244;
+$base: #1e1e2e;
+$mantle: #181825;
+$crust: #11111b;
+
+/* --- ANIMATIONS --- */
+@keyframes gradient-move {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+* {
+  all: unset;
+  font-family: "JetBrains Mono", "Iosevka Nerd Font", monospace;
+}
+
+/* --- WINDOW CONTAINER --- */
+.window-container {
+    background-size: 300% 300%;
+    animation: gradient-move 8s ease infinite;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.inner-box {
+    background-color: rgba(30, 30, 46, 0.98); /* $base with opacity */
+    border-radius: 17px; /* 20px - 3px padding */
+    padding: 25px;
+}
+
+/* --- HEADER --- */
+.header {
+    margin-bottom: 10px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 900;
+    color: $mauve;
+    text-shadow: 0 0 15px rgba(203, 166, 247, 0.2);
+}
+
+.count-badge {
+    background-color: $surface0;
+    color: $subtext1;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.close-btn {
+    font-family: "Iosevka Nerd Font";
+    font-size: 24px;
+    color: $overlay2;
+    transition: all 0.2s;
+}
+
+.close-btn:hover {
+    color: $red;
+    text-shadow: 0 0 10px rgba(243, 139, 168, 0.5);
+}
+
+/* --- SCROLL AREA --- */
+.scroll-area trough {
+    background-color: transparent;
+    min-height: 8px;
+}
+
+.scroll-area slider {
+    background-color: $surface1;
+    min-height: 8px;
+    min-width: 80px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.scroll-area slider:hover {
+    background-color: $blue;
+}
+
+/* --- WALLPAPER CARDS --- */
+.wall-card {
+    background-color: $surface0;
+    border-radius: 16px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy transition */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Preview Image */
+.wall-preview {
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    opacity: 0.85;
+}
+
+/* Text & Icon */
+.wall-icon {
+    font-family: "Iosevka Nerd Font";
+    color: $overlay1;
+    font-size: 14px;
+}
+
+.wall-name {
+    font-weight: 800;
+    font-size: 13px;
+    color: $subtext0;
+    transition: color 0.2s;
+}
+
+/* --- HOVER EFFECTS --- */
+.wall-card:hover {
+    background-color: $surface1;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    border-color: $overlay0;
+}
+
+.wall-card:hover .wall-preview {
+    opacity: 1;
+}
+
+.wall-card:hover .wall-name {
+    color: $text;
+}
+
+.wall-card:hover .wall-icon {
+    color: $blue;
+}
+
+/* --- ACTIVE STATE --- */
+.wall-card.active {
+    background-image: linear-gradient(135deg, $mauve, $blue);
+    border: 1px solid transparent;
+    box-shadow: 0 0 30px rgba(203, 166, 247, 0.5);
+}
+
+.wall-card.active .wall-preview {
+    opacity: 1;
+    border: 3px solid $base; /* Inner border to separate img from gradient */
+}
+
+.wall-card.active .wall-name {
+    color: $base; /* Dark text on gradient */
+    text-shadow: none;
+}
+
+.wall-card.active .wall-icon {
+    color: $base;
+}

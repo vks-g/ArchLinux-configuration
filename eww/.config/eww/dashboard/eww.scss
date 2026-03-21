@@ -1,0 +1,463 @@
+$rosewater: #f5e0dc;
+$flamingo: #f2cdcd;
+$pink: #f5c2e7;
+$mauve: #cba6f7;
+$red: #f38ba8;
+$maroon: #eba0ac;
+$peach: #fab387;
+$yellow: #f9e2af;
+$green: #a6e3a1;
+$teal: #94e2d5;
+$sky: #89dceb;
+$sapphire: #74c7ec;
+$blue: #89b4fa;
+$lavender: #b4befe;
+$text: #cdd6f4;
+$subtext1: #bac2de;
+$subtext0: #a6adc8;
+$overlay2: #9399b2;
+$overlay1: #7f849c;
+$overlay0: #6c7086;
+$surface2: #585b70;
+$surface1: #45475a;
+$surface0: #313244;
+$base: #1e1e2e;
+$mantle: #181825;
+$crust: #11111b;
+
+
+/** Global *******************************************/
+*{
+	all: unset;
+	font-family: feather;
+	font-family: Iosevka;
+}
+
+/** Background ***************************************/
+.bg {
+	background-image: url("images/bg.png");
+	background-color: #474D59;
+	opacity: 1;
+}
+
+/** Generic window ***********************************/
+.genwin {
+    background-color: $base; 
+    border-radius: 16px;
+    border: 2px solid $surface0; 
+}
+
+/** Profile ******************************************/
+.face {
+	background-size: 200px;
+	min-height: 200px;
+	min-width: 200px;
+	margin: 65px 0px 0px 0px;
+	border-radius: 100%;
+}
+
+.fullname {
+	color: #D46389;
+	font-size : 30px;
+	font-weight : bold;
+}
+
+.username {
+	color: #8FBCBB;
+	font-size : 22px;
+	font-weight : bold;
+	margin : -15px 0px 0px 0px;
+}
+
+/** System ********************************************/
+.iconcpu, .iconmem, .iconbright, .iconbat {
+	font-size : 32px;
+	font-weight : normal;
+}
+.iconcpu {
+	color: #BF616A;
+}
+.iconmem {
+	color: #A3BE8C;
+}
+.iconbright {
+	color: #EBCB8B;
+}
+.iconbat {
+	color: #88C0D0;
+}
+
+.cpu_bar, .mem_bar, .bright_bar, .bat_bar, scale trough {
+	all: unset;
+	background-color: #3A404C;
+	border-radius: 16px;
+	min-height: 28px;
+	min-width: 240px;
+}
+
+.cpu_bar, .mem_bar, .bright_bar, .bat_bar, scale trough highlight {
+	all: unset;
+	border-radius: 16px;
+}
+
+.cpu_bar scale trough highlight {
+	background-color: #BF616A;
+}
+.mem_bar scale trough highlight {
+	background-color: #A3BE8C;
+}
+.bright_bar scale trough highlight {
+	background-color: #EBCB8B;
+}
+.bat_bar scale trough highlight {
+	background-color: #88C0D0;
+}
+
+/** Clock ********************************************/
+.time_hour, .time_min {
+	color: #81A1C1;
+	font-size : 70px;
+	font-weight : bold;
+}
+.time_hour {
+	margin : 15px 0px 0px 20px;
+}
+.time_min {
+	margin : 0px 0px 10px 0px;
+}
+
+.time_mer {
+	color: #A3BE8C;
+	font-size : 40px;
+	font-weight : bold;
+	margin : 20px 0px 0px 0px;
+}
+
+.time_day {
+	color: #EBCB8B;
+	font-size : 30px;
+	font-weight : normal;
+	margin : 0px 0px 20px -20px;
+}
+
+/** Uptime ********************************************/
+.icontimer {
+	color: #B48EAD;
+	font-size : 90px;
+	font-weight : normal;
+}
+
+.uphour {
+	color: #E5E9F0;
+	font-size : 42px;
+	font-weight : bold;
+}
+
+.upmin {
+	color: #E5E9F0;
+	font-size : 32px;
+	font-weight : bold;
+}
+
+
+
+/** Weather ***************************************/
+.iconweather {
+	font-family: Iosevka Nerd Font;
+	font-size : 120px;
+	font-weight : normal;
+	margin : 15px 0px 0px 30px;
+}
+
+.label_temp {
+	color : #A6D1DD;
+	font-size : 80px;
+	font-weight : bold;
+	margin : -15px 30px 0px 0px;
+}
+
+.label_stat {
+	color : #BF616A;
+	font-size : 38px;
+	font-weight : bold;
+}
+
+.label_quote {
+	color : #E5E5E5;
+	font-size : 18px;
+	font-weight : normal;
+}
+
+/** Applications ***************************************/
+.appbox {
+	margin : 15px 0px 0px 25px;
+}
+
+.app_fox, .app_telegram, .app_discord, .app_terminal,
+.app_files, .app_geany, .app_code, .app_gimp, .app_vbox {
+    background-repeat: no-repeat;
+	background-size: 64px;
+	min-height: 64px;
+	min-width: 64px;
+	margin: 8px 8px 0px 8px;
+}
+
+.app_fox {}
+.app_telegram {}
+.app_discord {}
+.app_terminal {}
+.app_files {}
+.app_geany {}
+.app_code {}
+.app_gimp {}
+.app_vbox {}
+
+/** Links ***************************************/
+.iconweb, .iconmail {
+	color: #FFFFFF;
+	font-family: Iosevka Nerd Font;
+	font-size : 70px;
+	font-weight : normal;
+}
+.iconmail {
+	color: #DF584E;
+}
+
+.github {
+	background-color: #24292E;
+	border-radius: 16px;
+}
+.reddit {
+	background-color: #E46231;
+	border-radius: 16px;
+}
+.twitter {
+	background-color: #61AAD6;
+	border-radius: 16px;
+}
+.youtube {
+	background-color: #DF584E;
+	border-radius: 16px;
+}
+.mail {
+	background-color: #FFFFFF;
+	border-radius: 16px;
+}
+
+.mailbox {
+	background-color: #E5E5E5;
+	border-radius: 10px;
+	margin: 48px 0px 48px 0px;
+}
+.label_mails {
+	color: #404040;
+	font-size : 32px;
+	font-weight : bold;
+	margin: 0px 12px 0px 12px;
+}
+
+/** Power buttons ***************************************/
+.btn_logout, .btn_sleep, .btn_reboot, .btn_poweroff {
+	font-size : 48px;
+	font-weight : bold;
+}
+
+.btn_logout {
+	color: #BF616A;
+}
+.btn_sleep {
+	color: #A3BE8C;
+}
+.btn_reboot {
+	color: #EBCB8B;
+}
+.btn_poweroff {
+	color: #88C0D0;
+}
+
+/** Home folders ***************************************/
+.hddbox {
+	background-color: #3A404C;
+	border-radius: 10px;
+	margin : 15px;
+}
+.hddicon {
+	color: #81A1C1;
+	font-family: Iosevka Nerd Font;
+	font-size : 70px;
+	font-weight : normal;
+	margin : 25px 20px 25px 40px;
+}
+.hdd_label {
+	color: #E5E9F0;
+	font-size : 48px;
+	font-weight : bold;
+	margin : 0px 0px 0px 15px;
+}
+.fs_sep {
+	color: #2E3440;
+	font-size : 36px;
+	font-weight : bold;
+}
+
+.iconfolder1, .iconfolder2, .iconfolder3, .iconfolder4, .iconfolder5, .iconfolder6  {
+	font-family: Iosevka Nerd Font;
+	font-size : 32px;
+	font-weight : normal;
+	margin : 0px 0px 0px 75px;
+}
+.iconfolder1 {
+	color: #BF616A;
+}
+.iconfolder2 {
+	color: #A3BE8C;
+}
+.iconfolder3 {
+	color: #EBCB8B;
+}
+.iconfolder4 {
+	color: #81A1C1;
+}
+.iconfolder5 {
+	color: #B48EAD;
+}
+.iconfolder6 {
+	color: #88C0D0;
+}
+
+.label_folder1, .label_folder2, .label_folder3, .label_folder4, .label_folder5, .label_folder6  {
+	font-size : 22px;
+	font-weight : normal;
+	margin : 0px 0px 0px 30px;
+}
+.label_folder1 {
+	color: #BF616A;
+}
+.label_folder2 {
+	color: #A3BE8C;
+}
+.label_folder3 {
+	color: #EBCB8B;
+}
+.label_folder4 {
+	color: #81A1C1;
+}
+.label_folder5 {
+	color: #B48EAD;
+}
+.label_folder6 {
+	color: #88C0D0;
+}
+
+.dashboard-album-art {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 12px;
+    background-color: $surface1;
+}
+
+.dashboard-title {
+    color: $lavender;
+    font-size: 24px;
+    font-weight: 900;
+}
+
+.dashboard-artist {
+    color: $pink;
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+.dashboard-source {
+    color: $yellow;
+    font-size: 12px;
+    font-weight: bold;
+    font-style: italic;
+    margin-top: 4px;
+}
+
+/* Progress Bar Styling */
+scale trough {
+    all: unset;
+    background-color: $surface0;
+    border-radius: 12px;
+    min-height: 8px;
+    min-width: 100px; /* Ensures it stretches */
+}
+
+scale highlight {
+    all: unset;
+    background-color: $blue;
+    border-radius: 12px;
+}
+
+scale slider {
+    all: unset;
+    background-color: $text;
+    min-height: 14px;
+    min-width: 14px;
+    border-radius: 50%;
+    margin-left: -7px;
+    margin-top: -3px;
+}
+
+.dashboard-time {
+    color: $overlay2;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* Controls */
+.dashboard-ctrl-btn {
+    font-family: "Iosevka Nerd Font";
+    font-size: 32px;
+    color: $overlay2;
+    transition: color 0.3s;
+}
+
+.dashboard-ctrl-btn:hover {
+    color: $text;
+}
+
+.dashboard-play-btn {
+    font-family: "Iosevka Nerd Font";
+    font-size: 48px;
+    color: $mauve;
+    transition: color 0.3s;
+}
+
+.dashboard-play-btn:hover {
+    color: $pink;
+}
+.music-progress-bar trough {
+    all: unset;
+    background-color: $surface0;
+    border-radius: 12px;
+    min-height: 8px;
+    min-width: 100px;
+    margin-bottom: 5px; /* Spacing for the slider handle */
+}
+
+/* 2. Highlight (The Blue "Played" part) */
+.music-progress-bar highlight {
+    all: unset;
+    background-color: $blue;
+    border-radius: 12px;
+    min-height: 8px; /* Must match trough height to appear! */
+}
+
+/* 3. Slider (The Dot) */
+.music-progress-bar slider {
+    all: unset;
+    background-color: $text;
+    min-height: 14px;
+    min-width: 14px;
+    border-radius: 50%;
+    margin-left: -7px; /* Centers the dot on the start */
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.5); /* Optional shadow for visibility */
+}
+
+
