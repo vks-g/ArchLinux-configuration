@@ -1,0 +1,335 @@
+/* SWAYNC STYLE - ROUNDED & POLISHED
+   Based on your configuration + Catppuccin Mocha
+*/
+
+* {
+  all: unset;
+  font-size: 14px;
+  font-family: "Ubuntu Nerd Font", sans-serif;
+  transition: 200ms;
+}
+
+/* --- SLIDERS (Volume / Backlight) --- */
+trough highlight {
+  background: #cdd6f4;
+  border-radius: 20px; /* Fully rounded ends */
+}
+
+scale {
+  margin: 0 7px;
+}
+
+scale trough {
+  margin: 0rem 1rem;
+  min-height: 12px; /* Slightly thicker for better look */
+  min-width: 70px;
+  border-radius: 20px; /* Fully rounded pill shape */
+  background-color: #313244;
+  box-shadow: inset 0 0 2px 1px rgba(0,0,0,0.2); /* Inner depth */
+}
+
+trough slider {
+  margin: -10px;
+  min-width: 20px;
+  min-height: 20px;
+  border-radius: 50%; /* Perfect circle */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
+  background-color: #89b4fa;
+}
+
+trough slider:hover {
+  transform: scale(1.1); /* Subtle grow effect */
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.8), 0 0 8px #89b4fa;
+}
+
+/* --- NOTIFICATIONS --- */
+.notification-background {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.5), inset 0 0 0 1px #45475a;
+  border-radius: 20px; /* Rounder cards */
+  margin: 12px;
+  background: #181825;
+  color: #cdd6f4;
+  padding: 5px;
+}
+
+.notification-background .notification {
+  padding: 10px;
+  border-radius: 16px;
+  transition: background 0.2s ease;
+}
+
+.notification-background .notification.critical {
+  box-shadow: inset 0 0 7px 0 #f38ba8;
+  border: 1px solid #f38ba8;
+}
+
+.notification .notification-content {
+  margin: 7px;
+}
+
+.notification .notification-content overlay {
+  margin: 4px;
+}
+
+.notification-content .summary {
+  color: #cdd6f4;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.notification-content .time {
+  color: #a6adc8;
+  font-size: 0.9em;
+  margin-right: 5px;
+}
+
+.notification-content .body {
+  color: #bac2de;
+  margin-top: 4px;
+}
+
+.notification > *:last-child > * {
+  min-height: 3.4em;
+}
+
+/* Close Button */
+.notification-background .close-button {
+  margin: 7px;
+  padding: 4px;
+  border-radius: 50%; /* Circular close button */
+  color: #1e1e2e;
+  background-color: #f38ba8;
+  min-width: 24px;
+  min-height: 24px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.notification-background .close-button:hover {
+  background-color: #eba0ac;
+  transform: rotate(90deg); /* Playful rotation */
+}
+
+.notification-background .close-button:active {
+  background-color: #f5c2e7;
+}
+
+/* Actions */
+.notification .notification-action {
+  border-radius: 12px;
+  color: #cdd6f4;
+  box-shadow: inset 0 0 0 1px #45475a;
+  margin: 6px;
+  padding: 2px 4px;
+  font-size: 1rem;
+  background-color: #313244;
+}
+
+.notification .notification-action:hover {
+  background-color: #45475a;
+  color: #89b4fa;
+}
+
+.notification .notification-action:active {
+  background-color: #585b70;
+}
+
+/* Progress Bars */
+.notification.critical progress {
+  background-color: #f38ba8;
+}
+
+.notification.low progress,
+.notification.normal progress {
+  background-color: #89b4fa;
+}
+
+.notification progress,
+.notification trough,
+.notification progressbar {
+  border-radius: 20px;
+  min-height: 6px;
+}
+
+/* --- CONTROL CENTER --- */
+.control-center {
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.6), inset 0 0 0 1px #313244;
+  border-radius: 24px; /* Very round corners for main window */
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+  padding: 18px;
+  margin: 10px;
+}
+
+.control-center .notification-background {
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 1px #45475a;
+  margin: 8px 0;
+}
+
+.control-center .notification-background .notification {
+  border-radius: 16px;
+}
+
+.control-center .notification-background .notification.low {
+  opacity: 0.8;
+}
+
+/* Widgets Title */
+.control-center .widget-title > label {
+  color: #cdd6f4;
+  font-size: 1.4em;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.control-center .widget-title button {
+  border-radius: 12px;
+  color: #cdd6f4;
+  background-color: #313244;
+  box-shadow: inset 0 0 0 1px #45475a;
+  padding: 8px 12px;
+  font-weight: 600;
+}
+
+.control-center .widget-title button:hover {
+  background-color: #45475a;
+  color: #f9e2af;
+}
+
+.control-center .widget-title button:active {
+  background-color: #585b70;
+}
+
+.control-center .notification-group {
+  margin-top: 10px;
+}
+
+.control-center .notification-group:focus .notification-background {
+  background-color: #313244;
+}
+
+/* Scrollbar */
+scrollbar slider {
+  min-width: 8px;
+  margin: 0px 4px;
+  background: #585b70;
+  border-radius: 20px;
+  opacity: 0.8;
+}
+
+scrollbar trough {
+  margin: 0;
+}
+
+/* --- DND TOGGLE --- */
+.widget-dnd {
+  margin-top: 10px;
+  border-radius: 16px;
+  background: #313244; /* Unified background */
+  padding: 5px 15px;
+}
+
+.widget-dnd > switch {
+  font-size: initial;
+  border-radius: 20px;
+  background: #45475a;
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
+}
+
+.widget-dnd > switch:checked {
+  background: #89b4fa;
+}
+
+.widget-dnd > switch slider {
+  background: #cdd6f4;
+  border-radius: 50%;
+  margin: 2px;
+}
+
+/* --- MPRIS (Media) --- */
+.widget-mpris-player {
+  background: #313244;
+  border-radius: 20px;
+  color: #cdd6f4;
+  padding: 10px;
+  margin: 10px 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.widget-mpris-album-art {
+  border-radius: 16px;
+  margin-right: 15px;
+}
+
+.widget-mpris-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #cdd6f4;
+}
+
+.widget-mpris-subtitle {
+  font-size: 0.9rem;
+  color: #bac2de;
+}
+
+.widget-mpris button {
+  border-radius: 50%; /* Circular controls */
+  color: #cdd6f4;
+  margin: 0 5px;
+  padding: 8px;
+}
+
+.widget-mpris button:hover {
+  background-color: #45475a;
+  color: #89b4fa;
+}
+
+/* --- BUTTON GRID --- */
+.widget-buttons-grid {
+  padding-top: 1rem;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button {
+  background: #313244;
+  border-radius: 16px;
+  margin: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button:hover {
+  background: #45475a;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button label {
+  font-size: 1.8rem; /* Adjusted for better fit */
+}
+
+/* --- VOLUME & BACKLIGHT --- */
+.widget-volume, .widget-backlight {
+  background: #181825; /* Darker background for contrast */
+  border-radius: 16px;
+  margin: 5px 0;
+  padding: 5px;
+}
+
+.widget-volume label {
+  color: #74c7ec;
+  font-size: 1.5rem;
+  padding-left: 10px;
+}
+
+.widget-volume trough highlight {
+  background: #74c7ec;
+}
+
+.widget-backlight trough highlight {
+  background: #f9e2af;
+}
+
+.widget-backlight label {
+  font-size: 1.5rem;
+  color: #f9e2af;
+  padding-left: 10px;
+}
