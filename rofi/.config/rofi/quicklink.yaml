@@ -1,0 +1,17 @@
+- name: YouTube
+  icon: youtube.png
+  command: xdg-open https://www.youtube.com
+
+- name: OneNote
+  icon: onenote.png
+  command: xdg-open https://www.onenote.com
+
+- name: Kill Eww
+  icon: kill.png
+  command: pkill eww
+
+- name: Copy EWW AI
+  icon: copy.png
+  command: printf "I am on nix-os system, using hyprland, and I am using eww for my top bar.\\n\\nI have this eww.yuck:\\n%s\\n\\nAnd this eww.scss:\\n%s\\n" \\\n"$(cat /etc/nixos/config/programs/eww/new-eww/bar/eww.yuck)" \\\n"$(cat /etc/nixos/config/programs/eww/new-eww/bar/eww.scss)" | wl-copy
+
+

@@ -1,0 +1,181 @@
+* {
+    /* Catppuccin Mocha Palette */
+    bg-col:                 #1e1e2e;
+    bg-col-light:           #1e1e2e;
+    border-col:             #1e1e2e;
+    selected-col:           #1e1e2e;
+    blue:                   #89b4fa;
+    fg-col:                 #cdd6f4;
+    fg-col2:                #f38ba8;
+    grey:                   #6c7086;
+    surface0:               #313244;
+    surface1:               #45475a;
+    mauve:                  #cba6f7;
+    rosewater:              #f5e0dc;
+    
+    /* "Alive" Glass Colors */
+    bg-alpha:               #1e1e2ef2; 
+    surface-alpha:          #31324480; 
+    
+    /* GRADIENTS for "Cooler" Look */
+    /* A subtle gradient for selected items (Vertical: Surface -> Slightly Lighter) */
+    active-grad:            linear-gradient(to bottom, #45475a, #313244);
+    
+    /* A vibrant gradient for the active tab (Horizontal: Mauve -> Blue) */
+    tab-grad:               linear-gradient(to right, #cba6f7, #89b4fa);
+
+    width: 1200px;
+    font: "JetBrainsMono Nerd Font 11";
+}
+
+element-text, element-icon , mode-switcher {
+    background-color: inherit;
+    text-color:       inherit;
+}
+
+window {
+    height: 600px;
+    background-color: @bg-alpha;
+    border: 2px;
+    border-color: rgba(255, 255, 255, 0.08); 
+    border-radius: 20px;
+    transparency: "real";
+}
+
+mainbox {
+    background-color: transparent;
+    children: [ input-area, listview ];
+    orientation: horizontal;
+    spacing: 20px;
+    padding: 30px;
+}
+
+/* --- Left Sidebar Container --- */
+input-area {
+    children: [ inputbar, mode-switcher, dummy ];
+    background-color: transparent;
+    orientation: vertical;
+    expand: false;
+    width: 220px;
+    spacing: 15px;
+}
+
+/* --- 1. Compact Search Bar --- */
+inputbar {
+    children: [ entry ];
+    background-color: @surface-alpha;
+    border-radius: 12px; 
+    padding: 10px;
+    orientation: horizontal;
+    border: 1px;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+entry {
+    padding: 4px;
+    text-color: @fg-col;
+    background-color: transparent;
+    placeholder: "Search";
+    placeholder-color: @grey;
+    font: "JetBrainsMono Nerd Font Bold 11"; 
+    horizontal-align: 0.0;
+}
+
+/* --- 2. Mode Switcher (Tabs) --- */
+mode-switcher {
+    orientation: vertical;
+    spacing: 8px;
+    background-color: transparent;
+}
+
+button {
+    padding: 12px;
+    background-color: @surface-alpha;
+    text-color: @grey;
+    vertical-align: 0.5; 
+    horizontal-align: 0.0;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* COOLER TAB HOVER: Vibrant Gradient + Dark Text */
+button selected {
+    background-image: @tab-grad;
+    text-color: @bg-col;
+    font-weight: bold;
+    border: 0px;
+}
+
+/* --- 3. Dummy Spacer --- */
+dummy {
+    expand: true;
+    background-color: transparent;
+}
+
+/* --- App Grid (Right Side) --- */
+listview {
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    background-color: transparent;
+    
+    columns: 6; 
+    lines: 6;
+    spacing: 12px;
+    
+    flow: horizontal;
+    fixed-columns: true;
+}
+
+/* --- The Card --- */
+element {
+    orientation: vertical;
+    children: [ element-icon, element-text ];
+    padding: 15px 5px;
+    spacing: 6px;
+    
+    background-color: transparent;
+    border-radius: 14px;
+    text-color: @fg-col;
+    cursor: pointer;
+    border: 1px;
+    border-color: transparent;
+}
+
+/* COOLER ITEM HOVER: Glassy Gradient + Mauve Border */
+element selected {
+    /* Uses the active-grad defined at top for a 3D button feel */
+    background-image: @active-grad;
+    text-color: @mauve;
+    
+    border: 1px;
+    border-color: @mauve;
+    
+    /* Slightly different radius to make it feel 'pressed' or active */
+    border-radius: 14px;
+}
+
+element-icon {
+    size: 42px;
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+    cursor: inherit;
+}
+
+element-text {
+    text-color: inherit;
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+    cursor: inherit;
+    font: "JetBrainsMono Nerd Font 10";
+}
+
+/* --- Error Message --- */
+error-message {
+    background-color: @bg-col;
+    border: 1px;
+    border-color: @fg-col2;
+    border-radius: 12px;
+    padding: 20px;
+    text-color: @fg-col2;
+}
