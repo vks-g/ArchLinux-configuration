@@ -107,6 +107,7 @@ if [[ "$ACTION" =~ ^[0-9]+$ ]]; then
     WORKSPACE_NUM="$ACTION"
     MOVE_OPT="$2"
     echo "close" > "$IPC_FILE"
+    sleep 0.1
     
     if [[ "$MOVE_OPT" == "move" ]]; then
         hyprctl dispatch movetoworkspace "$WORKSPACE_NUM"
@@ -114,12 +115,14 @@ if [[ "$ACTION" =~ ^[0-9]+$ ]]; then
         hyprctl dispatch workspace "$WORKSPACE_NUM"
     fi
 
+    
+    hyprctl dispatch movewindowpixel "exact -5000 -5000,title:^(qs-master)$"
+    hyprctl dispatch resizewindowpixel "exact 1 1,title:^(qs-master)$"
+
     TARGET_ADDR=$(hyprctl clients -j | jq -r ".[] | select(.workspace.id == $WORKSPACE_NUM and (.class | contains(\"qs-master\") | not) and (.title | contains(\"qs-master\") | not)) | .address" | head -n 1)
 
     if [[ -n "$TARGET_ADDR" && "$TARGET_ADDR" != "null" ]]; then
         hyprctl --batch "keyword cursor:no_warps true ; dispatch focuswindow address:$TARGET_ADDR ; keyword cursor:no_warps false"
-    else
-        hyprctl --batch "keyword cursor:no_warps true ; dispatch focuswindow qs-master ; keyword cursor:no_warps false"
     fi
 
     exit 0

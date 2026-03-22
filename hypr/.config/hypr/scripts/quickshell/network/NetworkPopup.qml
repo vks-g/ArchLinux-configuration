@@ -15,9 +15,10 @@ Item {
         id: cache
         property string lastWifiSsid: ""
         property string lastWifiJson: ""
-        property string lastBtJson: ""
-    }
+	property string lastBtJson: ""
 
+    }
+       
     property bool ignoreNextModeFileUpdate: false
 
     Process {
@@ -755,7 +756,8 @@ Item {
                         property bool hasDevice: myDevice !== null
                         property bool isReallyActive: hasDevice || (isPrimary && window.activeCoreCount === 0)
 
-                        property real activeTransition: isReallyActive ? 1.0 : 0.0
+			property real activeTransition: isReallyActive ? 1.0 : 0.0
+			property real bumpScale: 1.0
                         
                         Behavior on activeTransition { 
                             enabled: window.introState >= 1.0; 
@@ -1200,9 +1202,9 @@ Item {
                             x: targetX
                             y: targetY + liveBob
 
-                            scale: (!isLoaded ? 0.0 : (floatMa.pressed ? dynamicScale * 0.95 : (floatCard.locksList ? dynamicScale * 1.08 : dynamicScale))) * floatCard.bumpScale
+                            scale: (!isLoaded ? 0.0 : (floatMa.pressed ? dynamicScale * 0.95 : ((floatCard &&floatCard.locksList) ? dynamicScale * 1.08 : dynamicScale))) * (floatCard ? floatCard.bumpScale : 1.0)
                             Behavior on scale { NumberAnimation { duration: 300; easing.type: Easing.OutBack } }
-                            z: floatCard.locksList ? 10 : index
+                            z: (floatCard && floatCard.locksList) ? 10 : index
 
                             MultiEffect {
                                 source: floatCard
@@ -1285,7 +1287,7 @@ Item {
                                     if (!isCurrentlyConnected && fillLevel > 0) drainAnim.start();
                                 }
 
-                                color: locksList ? "#2affffff" : "#0effffff"
+                                color: floatCard.locksList ? "#2affffff" : "#0effffff"
                                 Behavior on color { ColorAnimation { duration: 200 } }
 
                                 Rectangle {
@@ -1294,23 +1296,23 @@ Item {
                                     color: "transparent"
                                     border.width: 1
                                     border.color: window.surface2
-                                    visible: !isHighlighted && !locksList
+                                    visible: !floatCard.isHighlighted && !floatCard.locksList
                                 }
 
                                 Rectangle {
                                     anchors.fill: parent
                                     radius: 16
-                                    opacity: locksList || isHighlighted ? 1.0 : 0.0
+                                    opacity: floatCard.locksList || floatCard.isHighlighted ? 1.0 : 0.0
                                     color: "transparent"
-                                    border.width: isHighlighted && !locksList ? 1 : 2
+                                    border.width: floatCard.isHighlighted && !floatCard.locksList ? 1 : 2
                                     Behavior on opacity { NumberAnimation { duration: 250 } }
                                     
                                     Rectangle {
                                         anchors.fill: parent
-                                        anchors.margins: isHighlighted && !locksList ? 1 : 2
+                                        anchors.margins: floatCard.isHighlighted && !floatCard.locksList ? 1 : 2
                                         radius: 14
                                         color: window.base
-                                        opacity: locksList ? 0.9 : 1.0
+                                        opacity: floatCard.locksList ? 0.9 : 1.0
                                     }
                                     
                                     gradient: Gradient {

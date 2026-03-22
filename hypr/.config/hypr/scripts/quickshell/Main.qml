@@ -117,7 +117,7 @@ FloatingWindow {
         masterWindow.isWallpaperTransition = involvesWallpaper;
 
         if (newWidget === "hidden") {
-            if (currentActive !== "hidden" && layouts[currentActive]) {
+            if (true) {
                 masterWindow.morphDuration = 250; // FAST CLOSE
                 masterWindow.disableMorph = false;
                 let t = layouts[currentActive];
@@ -278,7 +278,7 @@ FloatingWindow {
 
     Timer {
         id: delayedClear
-        interval: masterWindow.isWallpaperTransition ? 150 : masterWindow.morphDuration // MODIFIED: Synced dynamically
+        interval: 0 
         onTriggered: {
             masterWindow.currentActive = "hidden";
             widgetStack.clear();
