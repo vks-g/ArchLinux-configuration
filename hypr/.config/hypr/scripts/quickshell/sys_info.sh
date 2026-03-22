@@ -116,25 +116,8 @@ toggle_bt() {
 
 ## BRIGHTNESS
 get_brightness() {
-    if command -v brightnessctl &> /dev/null; then
-        local percent=$(brightnessctl -m 2>/dev/null | cut -d, -f4 | tr -d '%')
-        echo "${percent:-50}"
-    elif command -v light &> /dev/null; then
-        local percent=$(light -G 2>/dev/null | cut -d. -f1)
-        echo "${percent:-50}"
-    elif [ -f /sys/class/backlight/*/brightness ]; then
-        local current=$(cat /sys/class/backlight/*/brightness 2>/dev/null | head -n1)
-        local max=$(cat /sys/class/backlight/*/max_brightness 2>/dev/null | head -n1)
-        if [ -n "$current" ] && [ -n "$max" ] && [ "$max" -gt 0 ]; then
-            echo $(( current * 100 / max ))
-        else
-            echo "50"
-        fi
-    else
-        echo "50"
-    fi
+    ddcutil getvcp 10 2>/dev/null | grep -oP 'current value =\s*\K[0-9]+' || echo "50"
 }
-
 ## AUDIO
 get_volume() {
     if command -v pamixer &> /dev/null; then

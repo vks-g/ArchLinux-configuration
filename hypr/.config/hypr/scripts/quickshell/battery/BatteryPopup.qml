@@ -102,7 +102,7 @@ Item {
             "powerprofilesctl get 2>/dev/null || echo 'balanced'; " +
             "awk '{print int($1/3600)\"h \"int(($1%3600)/60)\"m\"}' /proc/uptime 2>/dev/null || echo '0h 0m'; " +
             "wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null | awk '{print int($2*100), ($3==\"[MUTED]\"?\"off\":\"on\")}' || echo '0 on'; " +
-            "brightnessctl -m 2>/dev/null | awk -F, '{print substr($4, 1, length($4)-1)}' || echo '0'"
+            "ddcutil getvcp 10 2>/dev/null | grep -oP 'current value =\\s*\\K[0-9]+' || echo '50'"
         ]
         running: true
         stdout: StdioCollector {
@@ -599,7 +599,7 @@ Item {
                                     property int targetPct: -1
                                     onTriggered: {
                                         if (targetPct >= 0) {
-                                            Quickshell.execDetached(["brightnessctl", "set", targetPct + "%"]);
+                                            Quickshell.execDetached(["ddcutil", "setvcp", "10", String(targetPct)]);
                                             targetPct = -1;
                                         }
                                     }
