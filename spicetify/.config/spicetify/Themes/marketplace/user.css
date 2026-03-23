@@ -1,0 +1,115 @@
+/* ══════════════════════════════════════════════════════════════
+   Catppuccin Mocha + Hyprland blur transparency override
+   Drop in: ~/.config/spicetify/Themes/catppuccin/user.css
+   (append to the END of the existing catppuccin user.css)
+   ══════════════════════════════════════════════════════════════
+
+   Catppuccin Mocha palette reference used here:
+   --spice-main:    #1e1e2e  (base)
+   --spice-sidebar: #181825  (mantle)
+   --spice-player:  #11111b  (crust)
+   --spice-button:  #94e2d5  (teal accent)
+   --spice-text:    #cdd6f4  (text)
+*/
+
+/* ── Make all major surfaces transparent so Hyprland blur bleeds through ── */
+.Root__main-view,
+.main-view-container,
+.main-view-container__scroll-node,
+.main-view-container__scroll-node-child,
+.os-content,
+.os-padding,
+.os-viewport {
+    background: transparent !important;
+}
+
+/* ── Now-playing panel (right) ── */
+.Root__now-playing-view,
+.now-playing-view,
+.NowPlayingView,
+[data-testid="now-playing-view"] {
+    background: rgba(17, 17, 27, 0.30) !important;
+}
+
+/* ── Sidebar ── */
+.Root__nav-bar,
+.nav-bar,
+[data-testid="left-sidebar"] {
+    background: rgba(24, 24, 37, 0.35) !important;
+}
+
+/* ── Top bar ── */
+.Root__top-bar,
+.main-topBar-container,
+[data-testid="topbar"] {
+    background: rgba(17, 17, 27, 0.25) !important;
+}
+
+/* ── Bottom now-playing bar ── */
+.Root__now-playing-bar,
+.now-playing-bar,
+[data-testid="now-playing-bar"] {
+    background: rgba(17, 17, 27, 0.45) !important;
+    border-top: 1px solid rgba(148, 226, 213, 0.10) !important; /* teal hairline */
+}
+
+/* ── Cards — keep catppuccin surface0 but semi-transparent ── */
+.main-card-card,
+.x-shelf-shelf {
+    background: rgba(30, 30, 46, 0.50) !important;
+}
+
+/* ── Track row hover — teal tint ── */
+.main-trackList-trackListRow:hover {
+    background: rgba(148, 226, 213, 0.07) !important;
+}
+
+/* ── Active track row ── */
+.main-trackList-trackListRow--active {
+    background: rgba(148, 226, 213, 0.12) !important;
+}
+
+/* ══ CRITICAL: keep text + images at FULL brightness ══ */
+
+/* Text — never dim */
+.main-trackInfo-name,
+.main-trackInfo-artists,
+.Type__TypeElement-sc-goli3j-0,
+.encore-text,
+span, p, a {
+    opacity: 1 !important;
+}
+
+/* Album art — full opacity always */
+.cover-art img,
+.main-coverSlotExpanded-container img,
+[data-testid="cover-art"] img,
+.now-playing-widget__cover-art img,
+.main-image-image {
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* Sidebar icons — teal accent, full brightness */
+.main-yourLibraryX-navLink svg,
+.nav-bar svg {
+    opacity: 1 !important;
+    color: #94e2d5 !important;
+}
+
+/* ── Progress bar stays teal ── */
+.progress-bar__fg,
+.playback-progressbar-isPlaying {
+    background: #94e2d5 !important;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: rgba(148, 226, 213, 0.20);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 226, 213, 0.40);
+}
