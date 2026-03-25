@@ -1,0 +1,158 @@
+/* ══════════════════════════════════════════════════════════════
+   GTK4 / libadwaita — Nautilus
+   ~/.config/gtk-4.0/gtk.css
+   ══════════════════════════════════════════════════════════════ */
+
+@define-color window_bg_color rgba(25, 22, 38, 0.75);
+@define-color window_fg_color #cdd6f4;
+@define-color view_bg_color rgba(25, 22, 38, 0.75);
+@define-color view_fg_color #cdd6f4;
+@define-color headerbar_bg_color rgba(20, 18, 32, 0.80);
+@define-color headerbar_fg_color #cdd6f4;
+@define-color sidebar_bg_color rgba(25, 22, 38, 0.75);
+@define-color sidebar_fg_color #cdd6f4;
+@define-color card_bg_color rgba(35, 30, 50, 0.50);
+@define-color card_fg_color #cdd6f4;
+@define-color popover_bg_color rgba(20, 18, 32, 0.96);
+@define-color popover_fg_color #cdd6f4;
+@define-color accent_color #89b4fa;
+@define-color accent_bg_color rgba(137, 180, 250, 0.18);
+@define-color accent_fg_color #1e1e2e;
+
+/* ── Sidebar — same tone as terminal, no row bg when idle ── */
+.sidebar,
+.sidebar-pane,
+navigationview,
+leaflet {
+    background-color: rgba(25, 22, 38, 0.75) !important;
+    color: #cdd6f4;
+    border-right: 1px solid rgba(137, 180, 250, 0.05) !important;
+    box-shadow: none !important;
+}
+
+/* idle rows — fully transparent, zero visual noise */
+.sidebar row,
+.sidebar-pane row {
+    color: #a6adc8;
+    border-radius: 8px;
+    margin: 1px 6px;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* hover — barely visible lift */
+/*.sidebar row:hover,
+.sidebar-pane row:hover {
+    background-color: rgba(137, 180, 250, 0.07) !important;
+    color: #cdd6f4;
+}
+
+/* selected */
+/*.sidebar row:selected,
+.sidebar-pane row:selected {
+    background-color: rgba(137, 180, 250, 0.14) !important;
+    color: #89b4fa;
+}
+
+/* ── Main view — identical to sidebar ── */
+.view,
+scrolledwindow,
+scrolledwindow > widget {
+    background-color: rgba(25, 22, 38, 0.75) !important;
+    color: #cdd6f4;
+}
+
+/*.view row:hover {
+    background-color: rgba(137, 180, 250, 0.07);
+}
+
+.view row:selected {
+    background-color: rgba(137, 180, 250, 0.14);
+    color: #89b4fa;
+}
+
+/* ── Headerbar ── */
+headerbar {
+    background-color: rgba(20, 18, 32, 0.80) !important;
+    border-bottom: 1px solid rgba(137, 180, 250, 0.06);
+    box-shadow: none;
+    color: #cdd6f4;
+}
+
+headerbar button {
+    background: transparent;
+    border: none;
+    color: #a6adc8;
+    border-radius: 6px;
+}
+
+headerbar button:hover {
+    background-color: rgba(137, 180, 250, 0.10);
+    color: #89b4fa;
+}
+
+/* ── Path bar ── */
+.path-bar button {
+    background: rgba(35, 30, 50, 0.50);
+    color: #cdd6f4;
+    border-radius: 6px;
+    border: none;
+    margin: 0 2px;
+}
+
+.path-bar button:hover {
+    background: rgba(137, 180, 250, 0.12);
+    color: #89b4fa;
+}
+
+/* ── Entry ── */
+entry {
+    background: rgba(35, 30, 50, 0.70);
+    color: #cdd6f4;
+    border: 1px solid rgba(137, 180, 250, 0.12);
+    border-radius: 8px;
+    caret-color: #89b4fa;
+}
+
+entry:focus {
+    border-color: rgba(137, 180, 250, 0.35);
+}
+
+/* ── Popover / context menu ── */
+popover contents {
+    background: rgba(20, 18, 32, 0.96);
+    border: 1px solid rgba(137, 180, 250, 0.10);
+    border-radius: 10px;
+    padding: 4px;
+}
+
+popover contents row {
+    color: #cdd6f4;
+    border-radius: 6px;
+    padding: 4px 10px;
+    background: transparent;
+}
+
+popover contents row:hover {
+    background: rgba(137, 180, 250, 0.10);
+    color: #89b4fa;
+}
+
+/* ── Scrollbar ── */
+scrollbar trough { background: transparent; }
+scrollbar slider {
+    background: rgba(137, 180, 250, 0.15);
+    border-radius: 4px;
+    min-width: 4px;
+    min-height: 4px;
+}
+scrollbar slider:hover {
+    background: rgba(137, 180, 250, 0.30);
+}
+
+/* ── Status bar ── */
+statusbar {
+    background: rgba(20, 18, 32, 0.75);
+    color: #585b70;
+    border-top: 1px solid rgba(137, 180, 250, 0.05);
+}
