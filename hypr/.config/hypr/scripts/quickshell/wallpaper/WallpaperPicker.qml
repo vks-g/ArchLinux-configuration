@@ -57,7 +57,7 @@ Item {
     readonly property string thumbDir: homeDir + "/.cache/wallpaper_picker/thumbs"
     readonly property string srcDir: Quickshell.env("HOME") + "/Images/Wallpapers"
 
-    readonly property string swwwCommand: "swww img '%1' --transition-type %2 --transition-pos 0.5,0.5 --transition-fps 144 --transition-duration 1"
+    readonly property string swwwCommand: "awww img '%1' --transition-type %2 --transition-pos 0.5,0.5 --transition-fps 144 --transition-duration 1"
     readonly property string mpvCommand: "pkill mpvpaper; mpvpaper -o 'loop --no-audio --hwdec=auto --profile=high-quality --video-sync=display-resample --interpolation --tscale=oversample' '*' '%1'"    
     readonly property var transitions: ["grow", "outer", "any", "wipe", "wave", "pixel", "center"]
 
