@@ -1,0 +1,10 @@
+[Unit]
+Description=Restart Hyprland autostart processes after resume
+After=suspend.target hibernate.target hybrid-sleep.target suspend-then-hibernate.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/vks/.config/hypr/scripts/resume.sh
+
+[Install]
+WantedBy=suspend.target hibernate.target hybrid-sleep.target suspend-then-hibernate.target

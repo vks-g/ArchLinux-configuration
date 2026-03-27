@@ -3,7 +3,10 @@
 ###############################
 export PATH=$PATH:~/.spicetify
 
-
+###############################
+#           SLEEP 
+###############################
+alias sq='pkill swayosd-server; sleep 0.5; swayosd-server & wl-paste --type text --watch cliphist store & wl-paste --type image --watch cliphist store & ~/.config/hypr/scripts/volume_listener.sh & pkill quickshell; sleep 1 && quickshell -p ~/.config/hypr/scripts/quickshell/Main.qml & quickshell -p ~/.config/hypr/scripts/quickshell/TopBar.qml &'
 
 ###############################
 #        LS / EZA / COLORS

@@ -1,19 +1,11 @@
 #!/usr/bin/env bash
 sleep 2
 
-# Restart swww
-pkill swww-daemon
-sleep 0.5
-swww-daemon &
-sleep 0.5
-swww restore &
+# Restart awww
+pkill awww-daemon; sleep 0.5
+awww-daemon &
 
 # Restart hypridle
-pkill hypridle
-sleep 0.5
-hypridle &
-
-# Restart playerctld
 pkill playerctld
 playerctld &
 
@@ -27,8 +19,7 @@ pkill -f volume_listener.sh
 ~/.config/hypr/scripts/volume_listener.sh &
 
 # Restart quickshell
-pkill quickshell
-sleep 1
+pkill quickshell; sleep 1
 quickshell -p ~/.config/hypr/scripts/quickshell/Main.qml &
 quickshell -p ~/.config/hypr/scripts/quickshell/TopBar.qml &
 
@@ -36,4 +27,3 @@ quickshell -p ~/.config/hypr/scripts/quickshell/TopBar.qml &
 sleep 3
 hyprctl dispatch movewindowpixel "exact -5000 -5000,title:^(qs-master)$"
 hyprctl dispatch resizewindowpixel "exact 1 1,title:^(qs-master)$"
-

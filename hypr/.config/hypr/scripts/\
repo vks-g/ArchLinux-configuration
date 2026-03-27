@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+sleep 2
+
+export HYPRLAND_INSTANCE_SIGNATURE=$(ls /tmp/hypr/ | head -1)
+export WAYLAND_DISPLAY=wayland-1
+export XDG_RUNTIME_DIR=/run/user/1000
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+
+pkill awww-daemon; sleep 0.5
+systemd-run --user --scope awww-daemon
+
+pkill hypridle; sleep 0.5
+systemd-run --user --scope hypridle
+
+pkill playerctld
+systemd-run --user --scope playerctld
+
+pkill -f "wl-paste.*cliphist"
+systemd-run --user --scope wl-paste --type text --watch cliphist store
+systemd-run --user --scope wl-paste --type image --watch cliphist store
+
+pkill -f volume_listener.sh
+systemd-run --user --scope /home/vks/.config/hypr/scripts/volume_listener.sh
+
+pkill quickshell; sleep 1
+systemd-run --user --scope quickshell -p /home/vks/.config/hypr/scripts/quickshell/Main.qml
+systemd-run --user --scope quickshell -p /home/vks/.config/hypr/scripts/quickshell/TopBar.qml
+
+sleep 3
+hyprctl dispatch movewindowpixel "exact -5000 -5000,title:^(qs-master)$"
+hyprctl dispatch resizewindowpixel "exact 1 1,title:^(qs-master)$"
