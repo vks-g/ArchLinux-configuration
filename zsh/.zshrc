@@ -92,3 +92,4 @@ source ~/.config/zsh/zsh-init.sh
 
 # opencode
 export PATH=/home/vks/.opencode/bin:$PATH
+export PATH=~/.npm-global/bin:$PATH
